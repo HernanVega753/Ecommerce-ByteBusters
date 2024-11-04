@@ -1,7 +1,10 @@
 import express from "express";
 import cors from "cors";
 import mercadopago from "mercadopago";
+import path from "path";
+import clientesRoutes from "./routes/clientesRoutes.js"; // Importa las rutas de clientes
 import mysql from "mysql2/promise";
+import loggerMiddleware from "./middleware/loggerMiddleware.js";
 
 // SDK de Mercado Pago
 import { MercadoPagoConfig, Preference } from 'mercadopago';
@@ -18,7 +21,7 @@ async function createClientesTable() {
         database: process.env.DB_NAME || 'constructora'
     });
 
-    const createTableQuery = `
+    const createTableQueryClientes = `
         CREATE TABLE IF NOT EXISTS clientes (
             id INT AUTO_INCREMENT PRIMARY KEY,
             usuario VARCHAR(50) NOT NULL,
@@ -27,20 +30,41 @@ async function createClientesTable() {
             email VARCHAR(100) NOT NULL
         )
     `;
+    const createTableQueryMensajes = `
+        CREATE TABLE IF NOT EXISTS mensajes (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            nombre VARCHAR(50) NOT NULL,
+            correo VARCHAR(50) NOT NULL,
+            mensaje VARCHAR(255)
+        )
+    `;
 
-    await connection.execute(createTableQuery);
+    await connection.execute(createTableQueryClientes);
+    await connection.execute(createTableQueryMensajes);
+
+
     await connection.end();
-    console.log("Tabla 'clientes' verificada/creada con éxito.");
+    console.log("Tabla 'clientes/mensajes' verificada/creada con éxito.");
 }
 
 // Ejecuta la creación de la tabla
 createClientesTable().catch(error => console.error("Error al crear la tabla 'clientes':", error));
 
-const app = express();
+const app = express();  
 const port = 8080;
 
 app.use(cors());
-app.use(express.json());
+// Middleware de logger
+app.use(loggerMiddleware); // Usa el middleware de logger
+
+// Middleware para interpretar el cuerpo de las solicitudes
+app.use(express.json()); // Para interpretar JSON en las solicitudes
+app.use(express.urlencoded({ extended: true })); // Para interpretar datos URL-encoded
+
+
+
+// Usa las rutas de clientes
+app.use("/clientes", clientesRoutes);
 
 app.get("/", (req, res) => {
     res.send("SERVER ACTIVADO");
