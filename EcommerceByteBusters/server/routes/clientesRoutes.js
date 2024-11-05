@@ -1,8 +1,14 @@
 import express from "express";
 import mysql from "mysql2/promise";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+
 
 const router = express.Router();
+
+// Secreto JWT
+const JWT_SECRET = process.env.JWT_SECRET || 'logueate_primero'; // Define un secreto por defecto si no está en el entorno
+
 
 // Función para obtener conexión a la base de datos
 async function getConnection() {
@@ -11,6 +17,23 @@ async function getConnection() {
         user: process.env.DB_USER || 'root',
         password: process.env.DB_PASSWORD || 'admin',
         database: process.env.DB_NAME || 'constructora'
+    });
+}
+
+// Middleware para verificar el token
+export function verifyToken(req, res, next) {
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token) {
+        return res.redirect('../login');
+        
+    }
+
+    jwt.verify(token, JWT_SECRET, (err, decoded) => {
+        if (err) {
+            return res.redirect('../login');
+        }
+        req.user = decoded; // Guardar información del usuario en la solicitud
+        next();
     });
 }
 
@@ -56,7 +79,10 @@ router.post("/login", async (req, res) => {
             return res.status(401).json({ error: "Contraseña incorrecta" });
         }
 
-        res.json({ message: "Inicio de sesión exitoso", usuario: user.usuario });
+        // Generar el token con una duración limitada (1 hora)
+        const token = jwt.sign({ id: user.id, usuario: user.usuario }, JWT_SECRET, { expiresIn: "1h" });
+        res.json({ message: "token creado, duración 1hr", token });
+
     } catch (error) {
         console.error("Error al iniciar sesión:", error);
         res.status(500).json({ error: "Error al iniciar sesión" });
@@ -66,6 +92,7 @@ router.post("/login", async (req, res) => {
         }
     }
 });
+
 
 // Ruta para registrar los mensajes del formulario de contacto
 router.post('/mensaje', async (req, res) => {
@@ -92,8 +119,6 @@ router.post('/mensaje', async (req, res) => {
         }
     }
 });
-
-
 
 // Ruta para obtener todos los clientes
 router.get("/", async (req, res) => {

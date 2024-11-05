@@ -1,9 +1,14 @@
 import express from "express"; // framework para el lado del servidor
 import cors from "cors"; // comunicación de las APIs
+import path from 'path'; // uso de direcciones
+import { fileURLToPath } from 'url'; // para poder usar direcciones con configuaración de módulos
 import clientesRoutes from "./routes/clientesRoutes.js"; // Importa las rutas de clientes
 import mysql from "mysql2/promise"; // permite el uso de promesas en mysql
 import loggerMiddleware from "./middleware/loggerMiddleware.js"; // Punto medio que analiza los requerimientos
+import { verifyToken } from "./routes/clientesRoutes.js";
 
+const __filename = fileURLToPath(import.meta.url); // definición manual de directorio y nombre de archivo (por el uso de módulo)
+const __dirname = path.dirname(__filename); 
 
 // SDK de Mercado Pago
 import { MercadoPagoConfig, Preference } from 'mercadopago';
@@ -63,19 +68,33 @@ app.use(loggerMiddleware); // Usa el middleware de logger
 app.use(express.json()); // Para interpretar JSON en las solicitudes
 app.use(express.urlencoded({ extended: true })); // Para interpretar datos URL-encoded
 
-
+//app.use(verifyToken);
 
 // Usa las rutas de clientes
 app.use("/clientes", clientesRoutes);
 
-app.get("/", (req, res) => {
-    res.send("SERVER ACTIVADO");
+// Configura la carpeta 'client' como el directorio de archivos estáticos
+app.use(express.static(path.join(__dirname, "..", 'client')));
+
+
+// Definidas rutas html
+app.get('/', verifyToken, (req, res) => {
+  res.sendFile(path.join(__dirname, "..", 'client', 'login.html'));
+});
+  
+
+app.get('/login', (req, res) => {
+  res.sendFile(path.join(__dirname, "..", 'client', 'login.html'));
+});
+
+app.get('/register', (req, res) => {
+    res.sendFile(path.join(__dirname, "..", "client", "register.html"))
 });
 
 app.listen(port, () => {
     console.log(`El servidor está corriendo en el puerto ${port}`);
 });
-app.post("/create_preference", async (req, res) => {
+app.post("/create_preference", verifyToken, async (req, res) => {
     try {
         const body = {
             items: [
