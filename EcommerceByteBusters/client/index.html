@@ -47,7 +47,6 @@
     <section class="services" id="services">
         <h2>Nuestros Servicios</h2>
         <div class="service-cards">
-            <!-- Agregar descripciones de servicios como en drywall-sa.com.ar -->
             <div class="service-card">
                 <h3>Retiro por nuestra sucursal</h3>
                 <p>Retíralo por nuestra sucursal de 08:00hs a 19:00hs, horario corrido, obtené los materiales inmediatament!</p>
@@ -60,12 +59,12 @@
     </section>
 
     <!-- Contact Section -->
-    <section class="contact" id="contact">
+    <section class="contact" id="contacto">
         <h2>Contacto</h2>
-        <form action="/submit-form" method="POST">
-            <input type="text" placeholder="Nombre" required>
-            <input type="email" placeholder="Correo" required>
-            <textarea placeholder="Mensaje" required></textarea>
+        <form id="contactForm">
+            <input type="text" placeholder="Nombre" name="nombre" required>
+            <input type="email" placeholder="Correo" name="correo" required>
+            <textarea placeholder="Mensaje" name="mensaje" required></textarea>
             <button type="submit">Enviar</button>
         </form>
     </section>
@@ -84,8 +83,9 @@
     </footer>
 
     <!-- Scripts -->
-    <script src="/client/js/products.js"></script>
-    <script src="/client/js/index.js"></script>
-    <script src="/client/js/cart.js"></script>
+    <script src="./js/products.js"></script>
+    <script src="./js/index.js"></script>
+    <script src="./js/cart.js"></script>
+    <script src="./js/mensaje.js"></script>
 </body>
 </html>
