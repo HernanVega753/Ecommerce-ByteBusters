@@ -1,18 +1,19 @@
-import express from "express";
-import cors from "cors";
-import mercadopago from "mercadopago";
-import path from "path";
+import express from "express"; // framework para el lado del servidor
+import cors from "cors"; // comunicación de las APIs
 import clientesRoutes from "./routes/clientesRoutes.js"; // Importa las rutas de clientes
-import mysql from "mysql2/promise";
-import loggerMiddleware from "./middleware/loggerMiddleware.js";
+import mysql from "mysql2/promise"; // permite el uso de promesas en mysql
+import loggerMiddleware from "./middleware/loggerMiddleware.js"; // Punto medio que analiza los requerimientos
+
 
 // SDK de Mercado Pago
 import { MercadoPagoConfig, Preference } from 'mercadopago';
 // Agrega credenciales
 const client = new MercadoPagoConfig({ 
-    accessToken: process.env.ACCESS_TOKEN, 
+    accessToken: 'APP_USR-6878027478125365-091209-3cafa42ecdee0c015066a0c6bcc16ef6-1986448269', 
 });
-// Creación de tabla "clientes" si no existe
+
+
+// Creación de tabla "clientes" y "mensaje" si no existe
 async function createClientesTable() {
     const connection = await mysql.createConnection({
         host: process.env.DB_HOST || 'localhost',
@@ -39,11 +40,11 @@ async function createClientesTable() {
         )
     `;
 
-    await connection.execute(createTableQueryClientes);
+    await connection.execute(createTableQueryClientes); // Ejecuta las querys
     await connection.execute(createTableQueryMensajes);
 
 
-    await connection.end();
+    await connection.end(); // cuando termina la conexión de forma exitosa da  un mensaje
     console.log("Tabla 'clientes/mensajes' verificada/creada con éxito.");
 }
 
@@ -70,15 +71,18 @@ app.get("/", (req, res) => {
     res.send("SERVER ACTIVADO");
 });
 
+app.listen(port, () => {
+    console.log(`El servidor está corriendo en el puerto ${port}`);
+});
 app.post("/create_preference", async (req, res) => {
     try {
-        const preference = {
+        const body = {
             items: [
                 {
-                    title: req.body.title,
-                    quantity: Number(req.body.quantity),
-                    unit_price: Number(req.body.price),
-                    currency_id: "ARS",
+                title: req.body.title,
+                quantity: Number(req.body.quantity),
+                unit_price: Number(req.body.price),
+                currency_id: "ARS",
                 },
             ],
             back_urls: {
@@ -88,19 +92,15 @@ app.post("/create_preference", async (req, res) => {
             },
             auto_return: "approved",
         };
-
-        const result = await mercadopago.preferences.create(preference);
+        const preference = new Preference(client);
+        const result = await preference.create({ body });
         res.json({
-            id: result.body.id,
+            id: result.id,
         });
-    } catch (error) {
-        console.log("Error al crear la preferencia:", error);
-        res.status(500).json({
+    } catch {
+        console.log(error);
+        res.status(500).json ({
             error: "Error al crear la preferencia"
         });
     }
-});
-
-app.listen(port, () => {
-    console.log(`El servidor está corriendo en el puerto ${port}`);
 });
