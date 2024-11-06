@@ -4,10 +4,6 @@ const modalOverlay = document.getElementById("modal-overlay");
 const cartBtn = document.getElementById("cart-btn");
 const cartCounter = document.getElementById("cart-counter");
 
-
-
-
-
 const displayCart = () => {
     modalContainer.innerHTML = "";
     modalContainer.style.display = "block";

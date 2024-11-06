@@ -30,10 +30,16 @@ header {
     max-height: 50px;
 }
 
+.navbar {
+    display: flex;
+    flex-direction: row;
+}
+
 .navbar ul {
     list-style-type: none;
     padding: 0;
     display: flex;
+    align-self: center;
 }
 
 .navbar li {
@@ -443,6 +449,7 @@ footer {
     transform: scale(0.98);
     transition: transform 0.1s ease, background-color 0.1s ease;
 }
+
 
 @media only screen and (max-width: 500px) {
     .product-img {
