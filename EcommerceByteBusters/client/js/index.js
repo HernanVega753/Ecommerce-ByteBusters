@@ -2,7 +2,6 @@ const shopContent = document.getElementById("shopContent");
 const cart = []; // Carrito. Array vacío
 
 
-
 products.forEach(product => {
     const content = document.createElement("div");
     content.className = "card";

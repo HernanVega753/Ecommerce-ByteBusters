@@ -2,8 +2,11 @@ import express from "express"; // framework para el lado del servidor
 import cors from "cors"; // comunicación de las APIs
 import path from 'path'; // uso de direcciones
 import { fileURLToPath } from 'url'; // para poder usar direcciones con configuaración de módulos
-import clientesRoutes, { verifyToken } from "./routes/clientesRoutes.js"; // Importa las rutas de clientes
+import clientesRoutes from "./routes/clientesRoutes.js"; // Importa las rutas de clientes
 import mysql from "mysql2/promise"; // permite el uso de promesas en mysql
+import jwt from 'jsonwebtoken';
+
+const JWT_SECRET='logueado';
 import loggerMiddleware from "./middleware/loggerMiddleware.js"; // Punto medio que analiza los requerimientos
 //import { verifyToken } from "./routes/clientesRoutes.js";
 
@@ -63,7 +66,7 @@ const port = 8080;
 
 app.use(cors());
 // Middleware de logger
-app.use(loggerMiddleware); // Usa el middleware de logger
+//app.use(verifyToken); // Usa el middleware de logger
 
 // Middleware para interpretar el cuerpo de las solicitudes
 app.use(express.json()); // Para interpretar JSON en las solicitudes
@@ -79,7 +82,8 @@ app.use(express.static(path.join(__dirname, "..", 'client')));
 
 
 // Definidas rutas html
-  
+
+
 
 app.get('/login', (req, res) => {
   res.sendFile(path.join(__dirname, "..", 'client', 'login.html'));
@@ -121,4 +125,17 @@ app.post("/create_preference", async (req, res) => {
             error: "Error al crear la preferencia"
         });
     }
+});
+app.post('/verify-token', (req, res) => {
+    const token = req.headers['authorization']?.split(' ')[1]; // Obtener el token del encabezado
+    if (!token) {
+        return res.json({ isValid: false });
+    }
+
+    jwt.verify(token, JWT_SECRET, (err, authData) => {
+        if (err) {
+            return res.json({ isValid: false });
+        }
+        res.json({ isValid: true });
+    });
 });

@@ -3,11 +3,9 @@ import mysql from "mysql2/promise";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
+const JWT_SECRET='logueado';
 
 const router = express.Router();
-
-// Secreto JWT
-const JWT_SECRET = process.env.JWT_SECRET || 'logueate_primero'; // Define un secreto por defecto si no está en el entorno
 
 
 // Función para obtener conexión a la base de datos
@@ -18,29 +16,6 @@ async function getConnection() {
         password: process.env.DB_PASSWORD || 'admin',
         database: process.env.DB_NAME || 'constructora'
     });
-}
-
-// Middleware para verificar el token
-export function verifyToken(req, res, next) {
-    const bearerHeader = req.headers['authorization'];
-    console.log(bearerHeader); // Verifica si el encabezado contiene el token
-
-    if (typeof bearerHeader !== 'undefined') {
-        const bearer = bearerHeader.split(" ");
-        const bearerToken = bearer[1]; 
-        console.log(bearerToken); // Verifica que el token esté presente
-
-        jwt.verify(bearerToken, JWT_SECRET, (err, authData) => {
-            if (err) {
-                return res.sendStatus(403); // Token inválido
-            }
-            req.user = authData; // Asigna los datos decodificados
-            next(); // Continua con la ruta protegida
-        });
-    } else {
-        console.log("Token no proporcionado");
-        res.sendStatus(403); // Si no hay token
-    }
 }
 
 
@@ -90,7 +65,7 @@ router.post("/login", async (req, res) => {
         const token = jwt.sign({ id: user.id, usuario: user.usuario }, JWT_SECRET, { expiresIn: "1h" });
         
         // Enviar el token en la respuesta
-        res.json({ message:  token });
+        res.json({ token:  token });
     } catch (error) {
         console.error("Error al iniciar sesión:", error);
         res.status(500).json({ error: "Error al iniciar sesión" });
@@ -143,6 +118,7 @@ router.get("/", async (req, res) => {
             await connection.end();
         }
     }
+    res.json({ message: 'Acceso permitido a los datos protegidos' });
 });
 
 // Ruta para obtener un cliente por ID
