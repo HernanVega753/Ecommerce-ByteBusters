@@ -22,20 +22,27 @@ async function getConnection() {
 
 // Middleware para verificar el token
 export function verifyToken(req, res, next) {
-    const token = req.headers.authorization?.split(" ")[1];
-    if (!token) {
-        return res.redirect('../login');
-        
-    }
+    const bearerHeader = req.headers['authorization'];
+    console.log(bearerHeader); // Verifica si el encabezado contiene el token
 
-    jwt.verify(token, JWT_SECRET, (err, decoded) => {
-        if (err) {
-            return res.redirect('../login');
-        }
-        req.user = decoded; // Guardar información del usuario en la solicitud
-        next();
-    });
+    if (typeof bearerHeader !== 'undefined') {
+        const bearer = bearerHeader.split(" ");
+        const bearerToken = bearer[1]; 
+        console.log(bearerToken); // Verifica que el token esté presente
+
+        jwt.verify(bearerToken, JWT_SECRET, (err, authData) => {
+            if (err) {
+                return res.sendStatus(403); // Token inválido
+            }
+            req.user = authData; // Asigna los datos decodificados
+            next(); // Continua con la ruta protegida
+        });
+    } else {
+        console.log("Token no proporcionado");
+        res.sendStatus(403); // Si no hay token
+    }
 }
+
 
 // Ruta para registrar un cliente
 router.post("/register", async (req, res) => {
@@ -81,8 +88,9 @@ router.post("/login", async (req, res) => {
 
         // Generar el token con una duración limitada (1 hora)
         const token = jwt.sign({ id: user.id, usuario: user.usuario }, JWT_SECRET, { expiresIn: "1h" });
-        res.json({ message: "token creado, duración 1hr", token });
-
+        
+        // Enviar el token en la respuesta
+        res.json({ message:  token });
     } catch (error) {
         console.error("Error al iniciar sesión:", error);
         res.status(500).json({ error: "Error al iniciar sesión" });

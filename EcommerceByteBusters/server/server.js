@@ -2,16 +2,17 @@ import express from "express"; // framework para el lado del servidor
 import cors from "cors"; // comunicación de las APIs
 import path from 'path'; // uso de direcciones
 import { fileURLToPath } from 'url'; // para poder usar direcciones con configuaración de módulos
-import clientesRoutes from "./routes/clientesRoutes.js"; // Importa las rutas de clientes
+import clientesRoutes, { verifyToken } from "./routes/clientesRoutes.js"; // Importa las rutas de clientes
 import mysql from "mysql2/promise"; // permite el uso de promesas en mysql
 import loggerMiddleware from "./middleware/loggerMiddleware.js"; // Punto medio que analiza los requerimientos
-import { verifyToken } from "./routes/clientesRoutes.js";
+//import { verifyToken } from "./routes/clientesRoutes.js";
 
 const __filename = fileURLToPath(import.meta.url); // definición manual de directorio y nombre de archivo (por el uso de módulo)
 const __dirname = path.dirname(__filename); 
 
 // SDK de Mercado Pago
 import { MercadoPagoConfig, Preference } from 'mercadopago';
+import { verify } from "crypto";
 // Agrega credenciales
 const client = new MercadoPagoConfig({ 
     accessToken: 'APP_USR-6878027478125365-091209-3cafa42ecdee0c015066a0c6bcc16ef6-1986448269', 
@@ -78,9 +79,6 @@ app.use(express.static(path.join(__dirname, "..", 'client')));
 
 
 // Definidas rutas html
-app.get('/', verifyToken, (req, res) => {
-  res.sendFile(path.join(__dirname, "..", 'client', 'login.html'));
-});
   
 
 app.get('/login', (req, res) => {
@@ -94,7 +92,7 @@ app.get('/register', (req, res) => {
 app.listen(port, () => {
     console.log(`El servidor está corriendo en el puerto ${port}`);
 });
-app.post("/create_preference", verifyToken, async (req, res) => {
+app.post("/create_preference", async (req, res) => {
     try {
         const body = {
             items: [
@@ -117,7 +115,7 @@ app.post("/create_preference", verifyToken, async (req, res) => {
         res.json({
             id: result.id,
         });
-    } catch {
+    } catch (error) {
         console.log(error);
         res.status(500).json ({
             error: "Error al crear la preferencia"
