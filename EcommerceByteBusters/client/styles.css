@@ -60,6 +60,7 @@ header {
 /* Banner Styles */
 .banner {
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
     align-items: center;
     padding: 50px 20px;
@@ -69,6 +70,7 @@ header {
 
 .banner-text {
     flex: 1;
+    justify-self: center;
 }
 
 .banner-text h1 {
@@ -82,7 +84,8 @@ header {
 }
 
 .banner-image img {
-    max-width: 100%;
+    width: 100%;
+    max-width: 300pxpx;
     height: auto;
 }
 

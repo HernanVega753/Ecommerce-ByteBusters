@@ -12,7 +12,7 @@ async function obtenerDatosCuenta() {
         const clienteId = 1;  // Reemplaza esto con el clienteId real
 
         // Realiza la solicitud fetch
-        const response = await fetch(`http://localhost:8080/clientes/${clienteId}`, {
+        const response = await fetch(`http://localhost:8080/clientes/mostrar/${clienteId}`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -26,9 +26,9 @@ async function obtenerDatosCuenta() {
                 console.log("Datos obtenidos:", datos);  // Verifica si los datos son correctos
         
                 // Verifica si los datos contienen los campos esperados
-                if (datos && datos.nombre && datos.usuario && datos.telefono && datos.email) {
+                if (datos && datos.usuario && datos.telefono && datos.email) {
                     // Actualiza los elementos HTML con los datos del usuario
-                    document.getElementById("nombre").textContent = datos.nombre || "N/A";
+                    //document.getElementById("nombre").textContent = datos.nombre || "N/A";
                     document.getElementById("usuario").textContent = datos.usuario || "N/A";
                     document.getElementById("telefono").textContent = datos.telefono || "N/A";
                     document.getElementById("email").textContent = datos.email || "N/A";
