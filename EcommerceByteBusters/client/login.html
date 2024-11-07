@@ -3,11 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="./formStyles/login.css">
 
     <title>Inicio de Sesión</title>
 </head>
+
 <body>
+    <header>
+        
+        <div class="logo-container">
+            <img src="assets/bytebuster.png" alt="Logo">
+        </div>
+        <nav class="navbar">
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="login.html" id="iniciar_sesion">Iniciar Sesión</a></li>
+                <li><a href="register.html" id="registrarse">Registrarse</a></li>
+                <li><a href="account.html" id="cuenta">Cuenta</a></li>
+            </ul>
+        </nav>
+    </header>
     <h1>Inicio de Sesión</h1>
     <form id="loginForm">
         <label for="usuario">Usuario:</label>
@@ -18,8 +33,7 @@
 
         <button type="submit">Iniciar Sesión</button>
     </form>
-
-    <h2>¿No tenés cuenta? registrate acá! <button type="register">REGISTRARSE</button></h2>
+    <h2>¿No tenés cuenta? registrate acá! <a href="register.html" id="iniciar_sesion">REGISTRARSE</a></h2>
 
     <script src="./js/login.js"></script>
 </body>
