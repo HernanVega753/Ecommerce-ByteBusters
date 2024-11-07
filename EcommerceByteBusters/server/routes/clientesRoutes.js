@@ -82,7 +82,7 @@ router.get("/", async (req, res) => {
 });
 
 // Ruta para obtener un cliente por ID
-router.get("/clientes/:id", async (req, res) => {
+router.get("/mostrar/:id", async (req, res) => {
     const { id } = req.params;
     try {
         const [rows] = await pool.execute(`SELECT * FROM clientes WHERE id = ?`, [id]);
@@ -99,7 +99,7 @@ router.get("/clientes/:id", async (req, res) => {
 });
 
 // Ruta para actualizar un cliente
-router.put("/:id", async (req, res) => {
+router.put("/modificar/:id", async (req, res) => {
     const { id } = req.params;
     const { usuario, password, telefono, email } = req.body;
 
