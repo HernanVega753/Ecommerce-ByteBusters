@@ -468,3 +468,50 @@ footer {
         width: 100%;
     }
 }
+
+.container {
+    margin: 0 auto; /* Centra horizontalmente */
+    max-width: 400px;
+    height: 50vh;  
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.field {
+    margin-bottom: 15px;
+}
+
+.field label {
+    font-weight: bold;
+    color: #555;
+}
+
+.field span {
+    display: block;
+    margin-top: 5px;
+    color: #333;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}

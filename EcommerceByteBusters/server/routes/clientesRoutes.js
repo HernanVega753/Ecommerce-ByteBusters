@@ -13,7 +13,7 @@ async function getConnection() {
     return mysql.createConnection({
         host: process.env.DB_HOST || 'localhost',
         user: process.env.DB_USER || 'root',
-        password: process.env.DB_PASSWORD || 'admin',
+        password: process.env.DB_PASSWORD || '44057662Nicol',
         database: process.env.DB_NAME || 'constructora'
     });
 }
@@ -122,26 +122,30 @@ router.get("/", async (req, res) => {
 });
 
 // Ruta para obtener un cliente por ID
-router.get("/:id", async (req, res) => {
+// Asegúrate de que esta ruta esté definida correctamente en tu servidor
+router.get("/clientes/:id", async (req, res) => {
     const { id } = req.params;
     let connection;
     try {
         connection = await getConnection();
         const [rows] = await connection.execute(`SELECT * FROM clientes WHERE id = ?`, [id]);
+
         if (rows.length === 0) {
-            res.status(404).json({ error: "Cliente no encontrado" });
+            return res.status(404).json({ error: "Cliente no encontrado" });
         } else {
-            res.json(rows[0]);
+            return res.json(rows[0]);
         }
     } catch (error) {
         console.error("Error al obtener cliente:", error);
-        res.status(500).json({ error: "Error al obtener cliente" });
+        return res.status(500).json({ error: "Error al obtener cliente" });
     } finally {
         if (connection) {
             await connection.end();
         }
     }
 });
+
+
 
 // Ruta para actualizar un cliente
 router.put("/:id", async (req, res) => {

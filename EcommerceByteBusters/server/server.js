@@ -27,7 +27,7 @@ async function createClientesTable() {
     const connection = await mysql.createConnection({
         host: process.env.DB_HOST || 'localhost',
         user:   process.env.DB_USER || 'root',
-        password: process.env.DB_PASSWORD || 'admin',
+        password: process.env.DB_PASSWORD || '44057662Nicol',
         database: process.env.DB_NAME || 'constructora'
     });
 
@@ -139,3 +139,4 @@ app.post('/verify-token', (req, res) => {
         res.json({ isValid: true });
     });
 });
+
