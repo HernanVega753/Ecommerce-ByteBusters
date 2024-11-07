@@ -1,88 +1,94 @@
-import express from "express"; // framework para el lado del servidor
-import cors from "cors"; // comunicación de las APIs
-import clientesRoutes from "./routes/clientesRoutes.js"; // Importa las rutas de clientes
-import mysql from "mysql2/promise"; // permite el uso de promesas en mysql
-import loggerMiddleware from "./middleware/loggerMiddleware.js"; // Punto medio que analiza los requerimientos
+import express from "express";
+import cors from "cors";
+import path from 'path';
+import { fileURLToPath } from 'url';
+import clientesRoutes from "./routes/clientesRoutes.js";
+import pool from "./db/dbConnections.js";  // Importa el pool de conexiones desde db.js
+import jwt from 'jsonwebtoken';
+import config from "../config.js";
 
+const JWT_SECRET = config.jwtSecret;
+import loggerMiddleware from "./middleware/loggerMiddleware.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // SDK de Mercado Pago
 import { MercadoPagoConfig, Preference } from 'mercadopago';
-// Agrega credenciales
-const client = new MercadoPagoConfig({ 
-    accessToken: 'APP_USR-6878027478125365-091209-3cafa42ecdee0c015066a0c6bcc16ef6-1986448269', 
+
+const client = new MercadoPagoConfig({
+    accessToken: config.mercadoPagoToken,
 });
 
+// Creación de tabla "clientes" y "mensaje" si no existen
+async function createTables() {
+    try {
+        const connection = await pool.getConnection();
 
-// Creación de tabla "clientes" y "mensaje" si no existe
-async function createClientesTable() {
-    const connection = await mysql.createConnection({
-        host: process.env.DB_HOST || 'localhost',
-        user:   process.env.DB_USER || 'root',
-        password: process.env.DB_PASSWORD || 'admin',
-        database: process.env.DB_NAME || 'constructora'
-    });
+        const createTableQueryClientes = `
+            CREATE TABLE IF NOT EXISTS clientes (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                rol VARCHAR(50),
+                usuario VARCHAR(50) NOT NULL,
+                password VARCHAR(255) NOT NULL,
+                telefono VARCHAR(20),
+                email VARCHAR(100) NOT NULL
+            )
+        `;
 
-    const createTableQueryClientes = `
-        CREATE TABLE IF NOT EXISTS clientes (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            usuario VARCHAR(50) NOT NULL,
-            password VARCHAR(255) NOT NULL,
-            telefono VARCHAR(20),
-            email VARCHAR(100) NOT NULL
-        )
-    `;
-    const createTableQueryMensajes = `
-        CREATE TABLE IF NOT EXISTS mensajes (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            nombre VARCHAR(50) NOT NULL,
-            correo VARCHAR(50) NOT NULL,
-            mensaje VARCHAR(255)
-        )
-    `;
+        const createTableQueryMensajes = `
+            CREATE TABLE IF NOT EXISTS mensajes (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                nombre VARCHAR(50) NOT NULL,
+                correo VARCHAR(50) NOT NULL,
+                mensaje VARCHAR(255)
+            )
+        `;
 
-    await connection.execute(createTableQueryClientes); // Ejecuta las querys
-    await connection.execute(createTableQueryMensajes);
+        await connection.execute(createTableQueryClientes);
+        await connection.execute(createTableQueryMensajes);
 
+        console.log("Tablas 'clientes' y 'mensajes' verificadas/creadas con éxito.");
 
-    await connection.end(); // cuando termina la conexión de forma exitosa da  un mensaje
-    console.log("Tabla 'clientes/mensajes' verificada/creada con éxito.");
+        connection.release(); // Liberamos la conexión de vuelta al pool
+    } catch (error) {
+        console.error("Error al crear las tablas 'clientes' y 'mensajes':", error);
+    }
 }
 
-// Ejecuta la creación de la tabla
-createClientesTable().catch(error => console.error("Error al crear la tabla 'clientes':", error));
+// Ejecuta la creación de las tablas
+createTables();
 
-const app = express();  
+const app = express();
 const port = 8080;
 
 app.use(cors());
-// Middleware de logger
-app.use(loggerMiddleware); // Usa el middleware de logger
-
-// Middleware para interpretar el cuerpo de las solicitudes
-app.use(express.json()); // Para interpretar JSON en las solicitudes
-app.use(express.urlencoded({ extended: true })); // Para interpretar datos URL-encoded
-
-
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Usa las rutas de clientes
 app.use("/clientes", clientesRoutes);
 
-app.get("/", (req, res) => {
-    res.send("SERVER ACTIVADO");
+// Configura la carpeta 'client' como el directorio de archivos estáticos
+app.use(express.static(path.join(__dirname, "..", 'client')));
+
+app.get('/login', (req, res) => {
+    res.sendFile(path.join(__dirname, "..", 'client', 'login.html'));
 });
 
-app.listen(port, () => {
-    console.log(`El servidor está corriendo en el puerto ${port}`);
+app.get('/register', (req, res) => {
+    res.sendFile(path.join(__dirname, "..", "client", "register.html"));
 });
+
 app.post("/create_preference", async (req, res) => {
     try {
         const body = {
             items: [
                 {
-                title: req.body.title,
-                quantity: Number(req.body.quantity),
-                unit_price: Number(req.body.price),
-                currency_id: "ARS",
+                    title: req.body.title,
+                    quantity: Number(req.body.quantity),
+                    unit_price: Number(req.body.price),
+                    currency_id: "ARS",
                 },
             ],
             back_urls: {
@@ -94,13 +100,27 @@ app.post("/create_preference", async (req, res) => {
         };
         const preference = new Preference(client);
         const result = await preference.create({ body });
-        res.json({
-            id: result.id,
-        });
-    } catch {
+        res.json({ id: result.id });
+    } catch (error) {
         console.log(error);
-        res.status(500).json ({
-            error: "Error al crear la preferencia"
-        });
+        res.status(500).json({ error: "Error al crear la preferencia" });
     }
+});
+
+app.post('/verify-token', (req, res) => {
+    const token = req.headers['authorization']?.split(' ')[1];
+    if (!token) {
+        return res.json({ isValid: false });
+    }
+
+    jwt.verify(token, JWT_SECRET, (err, authData) => {
+        if (err) {
+            return res.json({ isValid: false });
+        }
+        res.json({ isValid: true });
+    });
+});
+
+app.listen(port, () => {
+    console.log(`El servidor está corriendo en el puerto ${port}`);
 });

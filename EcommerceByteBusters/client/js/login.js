@@ -15,9 +15,10 @@ document.getElementById('loginForm').addEventListener('submit', async (event) =>
 
         if (response.ok) {
             const result = await response.json();
-            alert(result.message); // Mensaje de éxito
+            localStorage.setItem("token", result.token); // Guardar el token en localStorage
+            alert("Inicio de sesión exitoso"); // Mensaje de éxito
             // Aquí podrías redirigir al usuario a otra página, por ejemplo:
-            // window.location.href = '/dashboard';
+            window.location.href = '/'; // Ejemplo de redirección a otra página
         } else {
             const error = await response.json();
             alert(error.error); // Mensaje de error
