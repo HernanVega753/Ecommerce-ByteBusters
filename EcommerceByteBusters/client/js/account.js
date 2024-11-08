@@ -9,8 +9,14 @@ async function obtenerDatosCuenta() {
     }
 
     try {
-        const clienteId = 1;  // Reemplaza esto con el clienteId real
+        const clienteId = localStorage.getItem("clienteId");  // Obtén clienteId desde el localStorage
+        console.log("Cliente ID:", clienteId);  // Verifica si el clienteId está presente
 
+        if (!clienteId) {
+            alert("No se pudo obtener el ID del cliente. Por favor, inicia sesión nuevamente.");
+            window.location.href = "login.html";
+            return;
+        }
         // Realiza la solicitud fetch
         const response = await fetch(`http://localhost:8080/clientes/mostrar/${clienteId}`, {
             method: "GET",

@@ -8,7 +8,6 @@ import jwt from 'jsonwebtoken';
 import config from "../config.js";
 
 const JWT_SECRET = config.jwtSecret;
-import loggerMiddleware from "./middleware/loggerMiddleware.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
