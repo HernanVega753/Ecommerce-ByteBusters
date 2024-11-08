@@ -91,12 +91,6 @@ app.post("/create_preference", async (req, res) => {
                     currency_id: "ARS",
                 },
             ],
-            back_urls: {
-                success: "https://campus.frsr.utn.edu.ar/moodle/mod/quiz/view.php?id=47895",
-                failure: "https://campus.frsr.utn.edu.ar/moodle/mod/quiz/view.php?id=47895",
-                pending: "https://campus.frsr.utn.edu.ar/moodle/mod/quiz/view.php?id=47895",
-            },
-            auto_return: "approved",
         };
         const preference = new Preference(client);
         const result = await preference.create({ body });
