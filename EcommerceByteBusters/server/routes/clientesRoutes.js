@@ -1,5 +1,5 @@
 import express from "express";
-import pool from "../db/dbConnections.js";  // Asegúrate de ajustar la ruta si está en otro directorio
+import pool from "../db/dbConnections.js";  
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import config from "../../config.js";
@@ -46,12 +46,15 @@ router.post("/login", async (req, res) => {
         }
 
         const token = jwt.sign({ id: user.id, usuario: user.usuario }, JWT_SECRET, { expiresIn: "1h" });
-        res.json({ token });
+        
+        // Incluye el clienteId en la respuesta junto con el token
+        res.json({ token, clienteId: user.id });
     } catch (error) {
         console.error("Error al iniciar sesión:", error);
         res.status(500).json({ error: "Error al iniciar sesión" });
     }
 });
+
 
 // Ruta para registrar los mensajes del formulario de contacto
 router.post('/mensaje', async (req, res) => {

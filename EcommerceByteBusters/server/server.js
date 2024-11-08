@@ -8,7 +8,6 @@ import jwt from 'jsonwebtoken';
 import config from "../config.js";
 
 const JWT_SECRET = config.jwtSecret;
-import loggerMiddleware from "./middleware/loggerMiddleware.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -91,12 +90,6 @@ app.post("/create_preference", async (req, res) => {
                     currency_id: "ARS",
                 },
             ],
-            back_urls: {
-                success: "https://campus.frsr.utn.edu.ar/moodle/mod/quiz/view.php?id=47895",
-                failure: "https://campus.frsr.utn.edu.ar/moodle/mod/quiz/view.php?id=47895",
-                pending: "https://campus.frsr.utn.edu.ar/moodle/mod/quiz/view.php?id=47895",
-            },
-            auto_return: "approved",
         };
         const preference = new Preference(client);
         const result = await preference.create({ body });
