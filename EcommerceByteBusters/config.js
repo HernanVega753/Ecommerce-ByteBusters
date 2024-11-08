@@ -10,5 +10,5 @@ export default {
         database: process.env.DB_NAME,
     },
     jwtSecret: process.env.JWT_SECRET,
-    mercadoPagoToken: process.env.MERCADO_PAGO_ACCESS_TOKEN
+    mercadoPagoToken: process.env.ACCESS_TOKEN
 };
