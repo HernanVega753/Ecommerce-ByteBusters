@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datos de la Cuenta</title>
+    <link rel="stylesheet" href="styles.css">  <!-- Archivo de estilo CSS -->
+    <script src="./js/secondVerification.js"></script>
+
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header>
+        <div class="logo-container">
+            <img src="assets/bytebuster.png" alt="Logo">
+        </div>
+        <nav class="navbar">
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="login.html" id="iniciar_sesion">Iniciar Sesión</a></li>
+                <li><a href="register.html" id="registrarse">Registrarse</a></li>
+                <li><a href="account.html" id="cuenta">Cuenta</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h2>Datos de la Cuenta</h2>
+        
+        <div class="field">
+            <label>Usuario:</label>
+            <span id="usuario"></span>
+        </div>
+        <div class="field">
+            <label>Teléfono:</label>
+            <span id="telefono"></span>
+        </div>
+        <div class="field">
+            <label>Email:</label>
+            <span id="email"></span>
+        </div>
+        <button onclick="window.location.href='modificar.html'">Modificar Datos</button>
+    </div>
+
+    <script src="js/account.js"></script> <!-- Archivo de JavaScript -->
+    
+</body>
+</html>

@@ -4,8 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Usuario</title>
+    <link rel="icon" href="./assets/ByteBustersIcon.png" type="image/x-icon">
+    <link rel="stylesheet" href="./formStyles/register.css">
+
 </head>
 <body>
+    <header>
+        
+        <div class="logo-container">
+            <img src="assets/bytebuster.png" alt="Logo">
+        </div>
+        <nav class="navbar">
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+            </ul>
+            <ul>
+                <li><a href="login.html" id="iniciar_sesion">Iniciar Sesión</a></li>
+                <li><a href="register.html" id="registrarse">Registrarse</a></li>
+                <li><a href="account.html" id="cuenta">Cuenta</a></li>
+            </ul>
+        </nav>
+    </header>
     <h1>Registro de Usuario</h1>
     <form id="registerForm">
         <label for="usuario">Usuario:</label>
@@ -22,6 +41,8 @@
 
         <button type="submit">Registrar</button>
     </form>
+    <h2>¿Ya tenés una cuenta? iniciar sesión! <a href="login.html" id="iniciar_sesion">INICIAR SESIÓN</a></h2>
+
 
     <script src="./js/register.js"></script>
 </body>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Productos</title>
+    <link rel="stylesheet" href="./formStyles/products.css">
+</head>
+<body>
+    <h1>Gestión de Productos</h1>
+    <div id="productList"></div>
+
+    <form id="productForm">
+        <label for="productName">Nombre del Producto:</label>
+        <input type="text" id="productName" name="productName" required><br>
+
+        <label for="price">Precio:</label>
+        <input type="number" id="price" name="price" required><br>
+
+        <label for="quanty">Cantidad:</label>
+        <input type="number" id="quanty" name="quanty" required><br>
+
+        <label for="img">URL de la Imagen:</label>
+        <input type="text" id="img" name="img"><br>
+
+        <button type="submit">Agregar Producto</button>
+    </form>
+
+    <script src="./js/productScript.js"></script>
+</body>
+</html>
