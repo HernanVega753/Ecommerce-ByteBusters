@@ -1,0 +1,199 @@
+:root {
+    --color-primary: #FF6600;
+    --color-secondary: #333333;
+    --color-accent: #FFD700;
+    --color-background: #F5F5F5;
+    --color-text: #2C3E50;
+    --color-hover-primary: #e55b00;
+    --box-shadow-color: rgba(0, 0, 0, 0.1);
+}
+html,
+body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header Styles */
+header {
+    background-color: var(--color-secondary);
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.logo-container img {
+    max-height: 50px;
+}
+
+.navbar {
+    display: flex;
+    flex-direction: row;
+}
+
+.navbar ul {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    align-self: center;
+}
+
+.navbar li {
+    margin-left: 20px;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.navbar a:hover {
+    color: var(--color-accent);
+}
+
+.cart-container {
+    position: relative;
+}
+
+.cart-counter {
+    background-color: #ff5722;
+    border-radius: 50%;
+    padding: 5px 10px;
+    color: white;
+    font-weight: bold;
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    display: inline-block;
+}
+
+.main-content {
+    max-width: 1200px;
+    width: 100%;
+    padding: 20px;
+    margin: 20px auto;
+    text-align: center;
+}
+
+h1 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Centering the table container */
+.table-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+#productosTable {
+    border-collapse: collapse;
+    width: 90%;
+    max-width: 800px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: white;
+}
+
+#productosTable th,
+#productosTable td {
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+#productosTable th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+#productosTable tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Modal Styles */
+.modal-container {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.modal-content {
+    background-color: white;
+    width: 90%;
+    max-width: 500px;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+#modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#modal-header h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.modal-close {
+    cursor: pointer;
+    font-size: 20px;
+    color: #333;
+}
+
+#modal-body {
+    padding: 15px 0;
+}
+
+#checkout-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+}
+
+#checkout-btn:hover {
+    background-color: #45a049;
+}
+
+.center-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 10px;
+    text-align: center;
+    color: #333;
+}
+
+/* Footer */
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    margin-top: auto;
+}

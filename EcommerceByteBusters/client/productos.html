@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://sdk.mercadopago.com/js/v2"></script>
+    <title>ByteBusters Constructora</title>
+    <link rel="stylesheet" href="./formStyles/productos-comprador.css">
+    <link rel="icon" href="./assets/ByteBustersIcon.png" type="image/x-icon">
+</head>
+
+<body>
+
+    <!-- Header Section -->
+    <header>
+        <div class="logo-container">
+            <img src="assets/bytebuster.png" alt="Logo">
+        </div>
+        <nav class="navbar">
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="account.html" id="cuenta">Cuenta</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Lista de Productos</h1>
+        <div id="productLista" class="center-content"></div>
+        <div class="table-container">
+            <table id="productosTable">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Precio</th>
+                        <th>Cantidad</th>
+                        <th>Imagen</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>© 2024 ByteBusters. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="./js/obtener-productos.js"></script>
+
+</body>
+
+</html>
