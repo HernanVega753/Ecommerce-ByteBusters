@@ -23,3 +23,4 @@ document.getElementById('addProductForm').addEventListener('submit', async funct
     }
 });
 
+// para html addProduct - vendedor

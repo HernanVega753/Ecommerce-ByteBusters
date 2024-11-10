@@ -119,3 +119,4 @@ async function deleteProduct(id) {
     }
 }
 
+// para html showProducts - vendedor
