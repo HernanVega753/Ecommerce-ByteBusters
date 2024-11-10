@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (response.ok) {
             const products = await response.json();
             const tableBody = document.querySelector('#productosTable tbody');
+            const defaultImg = '/uploads/ByteBustersIcon.png'; // Ruta de la imagen por defecto
 
             // Agregar los productos a la tabla
             products.forEach(product => {
@@ -13,8 +14,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     <td>${product.productName}</td>
                     <td>${product.price}</td>
                     <td>${product.quanty}</td>
-                    <td><img src="${product.img}" alt="${product.productName}" width="50" height="50"></td>
-                    <td><button class="add-to-cart" data-id="${product.id}">Agregar al carrito</button></td>
+                    <td><img src="${product.img ? product.img : defaultImg}" alt="${product.productName}" width="50" height="50" onerror="this.onerror=null;this.src='${defaultImg}';"></td>
                 `;
                 tableBody.appendChild(row);
             });

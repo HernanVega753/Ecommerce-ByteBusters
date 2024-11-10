@@ -1,3 +1,12 @@
+:root {
+    --color-primary: #FF6600;
+    --color-secondary: #333333;
+    --color-accent: #FFD700;
+    --color-background: #F5F5F5;
+    --color-text: #2C3E50;
+    --color-hover-primary: #e55b00;
+    --box-shadow-color: rgba(0, 0, 0, 0.1);
+}
 html,
 body {
     height: 100%;
@@ -62,14 +71,14 @@ button:hover {
 
 /* Header Styles */
 header {
-    background-color: #333333;
+    background-color: var(--color-secondary);
     padding: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-direction: column;
-    overflow-x: hidden;
-
+    align-items: center;
+    width: 100%;
 }
 
 .logo-container img {
@@ -78,17 +87,14 @@ header {
 
 .navbar {
     display: flex;
-    flex-direction: column;
-
+    flex-direction: row;
 }
 
 .navbar ul {
     list-style-type: none;
     padding: 0;
     display: flex;
-    flex-direction: row;
     align-self: center;
-
 }
 
 .navbar li {
@@ -103,7 +109,7 @@ header {
 }
 
 .navbar a:hover {
-    color: #FFD700;
+    color: var(--color-accent);
 }
 
 /* Footer */

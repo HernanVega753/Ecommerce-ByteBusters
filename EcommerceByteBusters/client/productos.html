@@ -23,11 +23,6 @@
                 <li><a href="account.html" id="cuenta">Cuenta</a></li>
             </ul>
         </nav>
-        <div id="cart-container" class="cart-container">
-            <button id="cart-btn" onclick="displayCart()">
-                🛒<span id="cart-counter" class="cart-counter">0</span>
-            </button>
-        </div>
     </header>
 
     <main>
@@ -41,25 +36,12 @@
                         <th>Precio</th>
                         <th>Cantidad</th>
                         <th>Imagen</th>
-                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
             </table>
         </div>
     </main>
-
-    <div id="modal-container" class="modal-container">
-        <div id="modal-content" class="modal-content">
-            <div id="modal-header">
-                <span class="modal-close" id="modal-close">❌</span>
-                <h3>Carrito de Compras</h3>
-            </div>
-            <div id="modal-body">
-                <button id="checkout-btn">Ir a la compra</button>
-            </div>
-        </div>
-    </div>
 
     <footer>
         <div class="footer-content">
@@ -68,6 +50,7 @@
     </footer>
 
     <script src="./js/obtener-productos.js"></script>
+
 </body>
 
 </html>

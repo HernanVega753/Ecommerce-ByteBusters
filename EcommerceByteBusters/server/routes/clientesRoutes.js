@@ -165,7 +165,8 @@ router.delete("/:id", async (req, res) => {
 // Crear un producto
 router.post('/add', upload.single('img'), async (req, res) => {
     const { productName, price, quanty } = req.body;
-    const imgPath = req.file ? `/uploads/${req.file.filename}` : null; // Guardar la ruta de la imagen
+    const defaultImgPath = '/assets/default.jpg'; // Ruta de la imagen por defecto
+    const imgPath = req.file ? `/uploads/${req.file.filename}` : '/uploads/ByteBustersIcon.png'; // Guardar la ruta de la imagen o usar la imagen por defecto
 
     try {
         const [result] = await pool.query(
@@ -178,6 +179,7 @@ router.post('/add', upload.single('img'), async (req, res) => {
         res.status(500).json({ error: 'Error al crear el producto' });
     }
 });
+
 
 // Obtener todos los productos
 router.get('/products', async (req, res) => {
