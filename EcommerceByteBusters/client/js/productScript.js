@@ -1,100 +1,122 @@
-async function fetchProducts() {
+// client/listProducts.js
+
+document.addEventListener('DOMContentLoaded', async () => {
     try {
+        // Solicitar los productos al backend
         const response = await fetch('http://localhost:8080/clientes/products');
-        const products = await response.json();
-        displayProducts(products);
-    } catch (error) {
-        console.error('Error al obtener productos:', error);
-    }
-}
-
-function displayProducts(products) {
-    const productList = document.getElementById('productList');
-    productList.innerHTML = '';
-
-    products.forEach(product => {
-        const productItem = document.createElement('div');
-        productItem.className = 'product-item';
-
-        productItem.innerHTML = `
-            <span>${product.productName} - $${product.price} - Cantidad: ${product.quanty}</span>
-            <button onclick="editProduct(${product.id})">Editar</button>
-            <button onclick="deleteProduct(${product.id})">Eliminar</button>
-        `;
-
-        productList.appendChild(productItem);
-    });
-}
-
-async function editProduct(id) {
-    const productName = prompt('Nombre del Producto:');
-    const price = prompt('Precio:');
-    const quanty = prompt('Cantidad:');
-    const img = prompt('URL de la Imagen:');
-
-    const updatedProduct = { productName, price, quanty, img };
-
-    try {
-        await fetch(`http://localhost:8080/clientes/products/update/${id}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(updatedProduct)
-        });
-
-        fetchProducts();
-    } catch (error) {
-        console.error('Error al actualizar producto:', error);
-    }
-}
-
-async function deleteProduct(id) {
-    try {
-        await fetch(`http://localhost:8080/clientes/delete/${id}`, {
-            method: 'DELETE'
-        });
-
-        fetchProducts();
-    } catch (error) {
-        console.error('Error al eliminar producto:', error);
-    }
-}
-
-document.getElementById('productForm').addEventListener('submit', async function(event) {
-    event.preventDefault();
-
-    const productName = document.getElementById('productName').value;
-    const price = document.getElementById('price').value;
-    const quanty = document.getElementById('quanty').value;
-    const img = document.getElementById('img').value;
-
-    const newProduct = {
-        productName: productName,
-        price: price,
-        quanty: quanty,
-        img: img
-    };
-
-    try {
-        const response = await fetch('http://localhost:8080/clientes/add', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(newProduct)
-        });
-
         if (response.ok) {
-            alert('Producto añadido con éxito');
-            fetchProducts();
+            const products = await response.json();
+            const tableBody = document.querySelector('#productosTable tbody');
+
+            // Agregar los productos a la tabla
+            products.forEach(product => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${product.productName}</td>
+                    <td>${product.price}</td>
+                    <td>${product.quanty}</td>
+                    <td><img src="${product.img}" alt="${product.productName}" width="50" height="50"></td>
+                    <td>
+                        <button onclick="deleteProduct(${product.id})">Eliminar</button>
+                        <button onclick="editProduct(${product.id})">Editar</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
         } else {
-            alert('Error al añadir producto');
+            alert('Error al obtener los productos');
         }
     } catch (error) {
-        alert('Error de conexión. Servidor no disponible.');
+        console.error('Error al cargar los productos', error);
     }
 });
 
-// Fetch and display products when the page loads
-fetchProducts();
+// Función para editar un producto
+function editProduct(id, productName, price, quanty, img) {
+    // Solicitar los datos del producto desde el servidor
+    fetch(`http://localhost:8080/clientes/products/${id}`)
+        .then(response => response.json())
+        .then(product => {
+            // Mostrar el formulario de edición
+            const editForm = document.getElementById('editProductoForm');
+            editForm.style.display = 'block';
+
+            // Rellenar los campos del formulario con los datos del producto
+            document.getElementById('editProductId').value = product.id;           // Establecer el ID del producto
+            document.getElementById('editProductName').value = product.productName; // Establecer el nombre del producto
+            document.getElementById('editProductPrice').value = product.price;     // Establecer el precio del producto
+            document.getElementById('editProductQuanty').value = product.quanty;   // Establecer la cantidad del producto
+
+            // Mostrar la imagen actual en el formulario de edición
+            const imgContainer = document.getElementById('imgContainer');
+            const imgPreview = document.getElementById('imgPreview');
+            if (product.img) {
+                imgContainer.style.display = 'block';  // Mostrar el contenedor de la imagen
+                imgPreview.src = product.img;         // Establecer la URL de la imagen
+            } else {
+                imgContainer.style.display = 'none';  // Ocultar si no hay imagen
+            }
+        })
+        .catch(error => console.error('Error al obtener el producto:', error));
+
+    // Manejar el envío del formulario de edición
+    const form = document.getElementById('editForm');
+    form.onsubmit = async function (event) {
+        event.preventDefault();
+
+        // Obtener los datos del formulario
+        const formData = new FormData();
+        formData.append('productName', document.getElementById('editProductName').value);
+        formData.append('price', document.getElementById('editProductPrice').value);
+        formData.append('quanty', document.getElementById('editProductQuanty').value);
+
+        const fileInput = document.getElementById('editProductImg');
+        if (fileInput.files.length > 0) {
+            formData.append('img', fileInput.files[0]);  // Si se selecciona una nueva imagen
+        } else {
+            formData.append('img', img);  // Mantener la imagen actual si no se selecciona una nueva
+        }
+
+        try {
+            const response = await fetch(`http://localhost:8080/clientes/products/update/${id}`, {
+                method: 'PUT',
+                body: formData
+            });
+
+            if (response.ok) {
+                alert('Producto actualizado con éxito');
+                location.reload();  // Recargar la página para reflejar los cambios
+            } else {
+                alert('Error al actualizar el producto');
+            }
+        } catch (error) {
+            console.error('Error de conexión', error);
+        }
+    };
+}
+
+// Función para cancelar la edición
+function cancelEdit() {
+    const editForm = document.getElementById('editProductoForm');
+    editForm.style.display = 'none';  // Ocultar el formulario de edición
+}
+
+// Función para eliminar un producto
+async function deleteProduct(id) {
+    try {
+        const response = await fetch(`http://localhost:8080/clientes/delete/${id}`, {
+            method: 'DELETE',
+        });
+
+        if (response.ok) {
+            alert('Producto eliminado con éxito');
+            location.reload();  // Recargar la página para actualizar la lista
+        } else {
+            alert('Error al eliminar el producto');
+        }
+    } catch (error) {
+        console.error('Error de conexión', error);
+    }
+}
+
+// para html showProducts - vendedor

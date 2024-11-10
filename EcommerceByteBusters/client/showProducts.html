@@ -1,15 +1,85 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Productos</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="formStyles/showProduc.css">
+    <link rel="icon" href="./assets/ByteBustersIcon.png" type="image/x-icon">
 </head>
-<body>
-    <h1>Lista de Productos</h1>
-    <div id="productList"></div>
 
-    <script src="productScript.js"></script>
+<body>
+    <header>
+
+        <div class="logo-container">
+            <img src="assets/bytebuster.png" alt="Logo">
+        </div>
+        <nav class="navbar">
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="addProduct.html" id="addProduct">Agregar Producto</a></li>
+                <li><a href="account.html" id="cuenta">Cuenta</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Lista de Productos</h1>
+        <div id="productLista"></div>
+
+        <table id="productosTable">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Precio</th>
+                    <th>Cantidad</th>
+                    <th>Imagen</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Aquí se agregarán los productos dinámicamente -->
+            </tbody>
+        </table>
+
+        <!-- Formulario de edición (inicialmente oculto) -->
+        <div id="editProductoForm" style="display:none;">
+            <h3>Editar Producto</h3>
+            <form id="editForm">
+                <input type="hidden" id="editProductId">
+                <label for="editProductName">Nombre:</label>
+                <input type="text" id="editProductName">
+
+                <label for="editProductPrice">Precio:</label>
+                <input type="number" id="editProductPrice" step="0.01">
+
+                <label for="editProductQuanty">Cantidad:</label>
+                <input type="number" id="editProductQuanty">
+
+                <label for="editProductImg">Imagen:</label>
+                <input type="file" id="editProductImg">
+
+                <!-- Imagen de referencia -->
+                <div id="imgContainer" style="display: none;">
+                    <p>Imagen actual:</p>
+                    <img id="imgPreview" src="" alt="Imagen del producto" width="100" height="100">
+                </div>
+
+                <button type="submit">Actualizar Producto</button>
+                <button type="button" onclick="cancelEdit()">Cancelar</button>
+            </form>
+        </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer>
+        <div class="footer-content">
+            <p>© 2024 ByteBusters. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="./js/productScript.js"></script>
 </body>
+
 </html>
