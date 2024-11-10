@@ -1,5 +1,5 @@
 import express from "express";
-import pool from "../db/dbConnections.js";  // Asegúrate de ajustar la ruta si está en otro directorio
+import pool from "../db/dbConnections.js";  
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import config from "../../config.js";
@@ -45,13 +45,21 @@ router.post("/login", async (req, res) => {
             return res.status(401).json({ error: "Contraseña incorrecta" });
         }
 
-        const token = jwt.sign({ id: user.id, usuario: user.usuario }, JWT_SECRET, { expiresIn: "1h" });
-        res.json({ token });
+        const token = jwt.sign({ id: user.id, usuario: user.usuario, rol: user.rol }, JWT_SECRET, { expiresIn: "1h" });
+        
+        // Redirigir según el rol del usuario
+        if (user.rol === 'vendedor') {
+            res.json({ token, clienteId: user.id, redirectUrl: '/add' });
+        } else {
+            res.json({ token, clienteId: user.id, redirectUrl: '/' });
+        }
     } catch (error) {
         console.error("Error al iniciar sesión:", error);
         res.status(500).json({ error: "Error al iniciar sesión" });
     }
 });
+
+
 
 // Ruta para registrar los mensajes del formulario de contacto
 router.post('/mensaje', async (req, res) => {
@@ -139,6 +147,67 @@ router.delete("/:id", async (req, res) => {
     } catch (error) {
         console.error("Error al eliminar cliente:", error);
         res.status(500).json({ error: "Error al eliminar cliente" });
+    }
+});
+
+//--------------------------Rutas de productos
+
+
+// Crear un producto
+router.post('/add', async (req, res) => {
+    const { productName, price, quanty, img } = req.body;
+
+    try {
+        const [result] = await pool.query(
+            "INSERT INTO productos (productName, price, quanty, img) VALUES (?, ?, ?, ?)",
+            [productName, price, quanty, img]
+        );
+        res.status(201).json({ id: result.insertId, productName, price, quanty, img });
+    } catch (err) {
+        console.error("Error al crear el producto:", err);
+        res.status(500).json({ error: 'Error al crear el producto' });
+    }
+});
+
+// Obtener todos los productos
+router.get('/products', async (req, res) => {
+
+    try {
+        const [products] = await pool.query("SELECT * FROM productos");
+        res.status(200).json(products);
+    } catch (err) {
+        console.error("Error al obtener los productos:", err);
+        res.status(500).json({ error: 'Error al obtener los productos' });
+    }
+});
+
+// Actualizar un producto
+router.put('/products/update/:id', async (req, res) => {
+    const { id } = req.params;
+    const { productName, price, quanty, img } = req.body;
+
+    try {
+        await pool.query(
+            "UPDATE productos SET productName = ?, price = ?, quanty = ?, img = ? WHERE id = ?",
+            [productName, price, quanty, img, id]
+        );
+        res.status(200).json({ id, productName, price, quanty, img });
+    } catch (err) {
+        console.error("Error al actualizar el producto:", err);
+        res.status(500).json({ error: 'Error al actualizar el producto' });
+    }
+});
+
+// Eliminar un producto
+router.delete('/delete/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        await pool.query("DELETE FROM productos WHERE id = ?", [id]);
+        res.status(200).json({ message: 'Producto eliminado con éxito' });
+    } catch (err) {
+        console.error("Error al eliminar el producto:", err);
+        res.status(500).json({ error: 'Error al eliminar el producto' });
     }
 });
 

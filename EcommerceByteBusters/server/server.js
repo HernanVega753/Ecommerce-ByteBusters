@@ -8,7 +8,6 @@ import jwt from 'jsonwebtoken';
 import config from "../config.js";
 
 const JWT_SECRET = config.jwtSecret;
-import loggerMiddleware from "./middleware/loggerMiddleware.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -44,11 +43,21 @@ async function createTables() {
                 mensaje VARCHAR(255)
             )
         `;
+        const createTableQueryProductos = `
+            CREATE TABLE IF NOT EXISTS productos (
+                id INT AUTO_INCREMENT PRIMARY KEY, 
+                productName VARCHAR(255) NOT NULL, 
+                price DECIMAL(10, 2) NOT NULL, 
+                quanty INT NOT NULL, 
+                img VARCHAR(255)
+            )
+        `;
 
         await connection.execute(createTableQueryClientes);
         await connection.execute(createTableQueryMensajes);
+        await connection.execute(createTableQueryProductos);
 
-        console.log("Tablas 'clientes' y 'mensajes' verificadas/creadas con éxito.");
+        console.log("Tablas 'clientes', 'productos' y 'mensajes' verificadas/creadas con éxito.");
 
         connection.release(); // Liberamos la conexión de vuelta al pool
     } catch (error) {
@@ -78,6 +87,9 @@ app.get('/login', (req, res) => {
 
 app.get('/register', (req, res) => {
     res.sendFile(path.join(__dirname, "..", "client", "register.html"));
+});
+app.get('/add', (req, res) => {
+    res.sendFile(path.join(__dirname, "..", "client", "addProduct.html"));
 });
 
 app.post("/create_preference", async (req, res) => {
