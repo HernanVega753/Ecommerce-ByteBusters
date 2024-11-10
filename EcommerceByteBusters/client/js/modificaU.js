@@ -1,30 +1,16 @@
 // Obtiene el ID del usuario desde localStorage
-const userId = localStorage.getItem("userId");
+const userId = localStorage.getItem("clienteId");
+const botonModificar = document.getElementById("boton-modificar");
 
 // Verifica que el ID esté almacenado
 if (!userId) {
     console.error("No se encontró un ID de usuario en la memoria local.");
 }
 
-// Función para mostrar información del usuario
-async function mostrarUsuario() {
-    try {
-        const response = await fetch(`/mostrar/${userId}`);
-        if (!response.ok) {
-            throw new Error("Error al obtener el usuario");
-        }
-        const usuario = await response.json();
-        console.log("Datos del usuario:", usuario);
-        // Aquí puedes usar los datos para llenar campos en tu interfaz de usuario
-    } catch (error) {
-        console.error(error.message);
-    }
-}
-
 // Función para modificar el usuario
 async function modificarUsuario(data) {
     try {
-        const response = await fetch(`/modificar/${userId}`, {
+        const response = await fetch(`http://localhost:8080/cliente/modificar/${userId}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -36,38 +22,33 @@ async function modificarUsuario(data) {
         }
         const result = await response.json();
         console.log(result.message);
+        alert("Datos modificados con éxito.");
     } catch (error) {
         console.error(error.message);
+        alert("Error al modificar los datos.");
     }
 }
 
-// Función para eliminar el usuario
-async function eliminarUsuario() {
-    try {
-        const response = await fetch(`/${userId}`, {
-            method: "DELETE",
-        });
-        if (!response.ok) {
-            throw new Error("Error al eliminar el usuario");
-        }
-        const result = await response.json();
-        console.log(result.message);
-    } catch (error) {
-        console.error(error.message);
+// Evento para el botón de modificar
+botonModificar.addEventListener("click", () => {
+    // Obtiene los valores de los campos de entrada
+    const usuario = document.getElementById("usuario").value;
+    const password = document.getElementById("password").value;
+    const telefono = document.getElementById("telefono").value;
+    const email = document.getElementById("email").value;
+
+    // Crea el objeto con los datos
+    const data = {
+        usuario: usuario,
+        telefono: telefono,
+        email: email
+    };
+
+    // Solo agrega el password si se proporcionó
+    if (password) {
+        data.password = password;
     }
-}
 
-// Ejemplo de cómo llamar a cada función:
-// Muestra el usuario
-mostrarUsuario();
-
-// Modifica el usuario (pasando los datos actualizados)
-modificarUsuario({
-    usuario: "nuevoUsuario",
-    password: "nuevaPassword",
-    telefono: "123456789",
-    email: "nuevoemail@example.com"
+    // Llama a la función para modificar el usuario
+    modificarUsuario(data);
 });
-
-// Elimina el usuario
-eliminarUsuario();

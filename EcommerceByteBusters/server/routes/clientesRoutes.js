@@ -88,7 +88,7 @@ router.post('/mensaje', async (req, res) => {
 });
 
 // Ruta para obtener todos los clientes
-router.get("/", async (req, res) => {
+router.get("/delete", async (req, res) => {
     try {
         const [rows] = await pool.execute(`SELECT * FROM clientes`);
         res.json(rows);
