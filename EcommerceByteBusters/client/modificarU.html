@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./formStyles/modificarUsuario.css">
+    <script src="https://sdk.mercadopago.com/js/v2"></script>
+    <title>ByteBusters Constructora</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="icon" href="./assets/ByteBustersIcon.png" type="image/x-icon">
+
+</head>
+<body>
+
+    <!-- Header Sectionn -->
+    <header>
+        
+        <div class="logo-container">
+            <img src="assets/bytebuster.png" alt="Logo">
+        </div>
+        <nav class="navbar">
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="#about">Nosotros</a></li>
+                <li><a href="#services">Servicios</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+                <li><a href="login.html" id="iniciar_sesion">Iniciar Sesión</a></li>
+                <li><a href="register.html" id="registrarse">Registrarse</a></li>
+                <li><a href="account.html" id="cuenta">Cuenta</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section class="section">
+        <div class="informacion-conteiner">
+            <div class="titulo">
+                <p>Modificación de Datos</p>
+            </div>
+            <div class="contenedor-register">
+                <input type="text" placeholder="Nuevo nombre">
+                <input type="text" placeholder="Nuevo usuario">
+                <input type="password" placeholder="Nueva contraseña">
+                <input type="email" placeholder="Email">
+            </div>
+            <a href="./index.html" class="contenedor-button">
+                <button>Modificar</button>
+            </a>
+            <div class="contenedor-p__register">
+                <p><a href="./account.html">Volver</a></p>
+            </div>
+        </div>
+    </section>
+    <script src="./js/modificaU.js"></script>
+</body>
+</html>
