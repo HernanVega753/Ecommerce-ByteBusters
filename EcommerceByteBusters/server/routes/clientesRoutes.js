@@ -1,16 +1,25 @@
 import express from "express";
-import pool from "../db/dbConnections.js";  
+import pool from "../db/dbConnections.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import config from "../../config.js";
+import multer from 'multer';
+import path from 'path';
 
 const JWT_SECRET = config.jwtSecret;
 const router = express.Router();
 
+// Configuración para la carga de imágenes usando multer
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/'); // Directorio para guardar las imágenes
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + path.extname(file.originalname)); // Nombre único para las imágenes
+    }
+});
 
-
-
-
+const upload = multer({ storage });  // Middleware de carga de archivos
 
 // Ruta para registrar un cliente
 router.post("/register", async (req, res) => {
@@ -46,7 +55,7 @@ router.post("/login", async (req, res) => {
         }
 
         const token = jwt.sign({ id: user.id, usuario: user.usuario, rol: user.rol }, JWT_SECRET, { expiresIn: "1h" });
-        
+
         // Redirigir según el rol del usuario
         if (user.rol === 'vendedor') {
             res.json({ token, clienteId: user.id, redirectUrl: '/add' });
@@ -154,15 +163,16 @@ router.delete("/:id", async (req, res) => {
 
 
 // Crear un producto
-router.post('/add', async (req, res) => {
-    const { productName, price, quanty, img } = req.body;
+router.post('/add', upload.single('img'), async (req, res) => {
+    const { productName, price, quanty } = req.body;
+    const imgPath = req.file ? `/uploads/${req.file.filename}` : null; // Guardar la ruta de la imagen
 
     try {
         const [result] = await pool.query(
             "INSERT INTO productos (productName, price, quanty, img) VALUES (?, ?, ?, ?)",
-            [productName, price, quanty, img]
+            [productName, price, quanty, imgPath]
         );
-        res.status(201).json({ id: result.insertId, productName, price, quanty, img });
+        res.status(201).json({ id: result.insertId, productName, price, quanty, img: imgPath });
     } catch (err) {
         console.error("Error al crear el producto:", err);
         res.status(500).json({ error: 'Error al crear el producto' });
@@ -174,29 +184,106 @@ router.get('/products', async (req, res) => {
 
     try {
         const [products] = await pool.query("SELECT * FROM productos");
-        res.status(200).json(products);
+        const productsWithImageURL = products.map(product => ({
+            ...product,
+            img: `http://localhost:8080${product.img}`  // Asegúrate de que esta sea la ruta correcta
+        }));
+        res.status(200).json(productsWithImageURL);
     } catch (err) {
         console.error("Error al obtener los productos:", err);
         res.status(500).json({ error: 'Error al obtener los productos' });
     }
 });
 
-// Actualizar un producto
-router.put('/products/update/:id', async (req, res) => {
+// Ruta para obtener un producto por ID (GET)
+router.get('/products/:id', async (req, res) => {
     const { id } = req.params;
-    const { productName, price, quanty, img } = req.body;
 
     try {
-        await pool.query(
-            "UPDATE productos SET productName = ?, price = ?, quanty = ?, img = ? WHERE id = ?",
-            [productName, price, quanty, img, id]
-        );
-        res.status(200).json({ id, productName, price, quanty, img });
+        const [rows] = await pool.execute('SELECT * FROM productos WHERE id = ?', [id]);
+        if (rows.length === 0) {
+            return res.status(404).json({ error: 'Producto no encontrado' });
+        }
+        res.json(rows[0]);
+    } catch (error) {
+        console.error('Error al obtener el producto:', error);
+        res.status(500).json({ error: 'Error al obtener el producto' });
+    }
+});
+
+// Actualizar un producto
+router.put('/products/update/:id', upload.single('img'), async (req, res) => {
+    const { id } = req.params;
+    const { productName, price, quanty } = req.body;
+
+    let imgPath = null;// Inicializamos imgPath con el valor de la imagen que viene en la base de datos (por defecto se mantiene la actual)
+
+    // Si la imagen no se carga, mantiene la imagen anterior
+    if (req.file) {
+        imgPath = `/uploads/${req.file.filename}`;
+    }
+
+    // Aseguramos que los valores de productName, price y quanty no sean undefined
+    // Si no se proporcionan, dejamos el valor actual del producto en la base de datos
+    const updates = [];
+    const values = [];
+
+    // Verificar si productName fue proporcionado
+    if (productName) {
+        updates.push('productName = ?');
+        values.push(productName);
+    }
+
+    // Verificar si price fue proporcionado
+    if (price) {
+        updates.push('price = ?');
+        values.push(price);
+    }
+
+    // Verificar si quanty fue proporcionado
+    if (quanty) {
+        updates.push('quanty = ?');
+        values.push(quanty);
+    }
+
+    // Verificar si imgPath fue proporcionado (es decir, si se subió una nueva imagen o se pasó una nueva URL)
+    if (imgPath !== null) {
+        updates.push('img = ?');
+        values.push(imgPath);
+    }
+
+    // Agregar el ID al final de los valores para la cláusula WHERE
+    values.push(id);
+
+    // Si no se proporcionaron datos para actualizar, respondemos con un error
+    if (updates.length === 0) {
+        return res.status(400).json({ error: "No se proporcionaron datos para actualizar." });
+    }
+
+    // Crear la consulta SQL para actualizar los campos que se proporcionaron
+    const query = `
+        UPDATE productos 
+        SET ${updates.join(', ')}
+        WHERE id = ?
+    `;
+
+    try {
+        // Ejecutamos la consulta de actualización
+        const [result] = await pool.execute(query, values);
+
+        // Si no se encontraron filas afectadas, devolvemos un error 404
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: "Producto no encontrado" });
+        }
+
+        // Responder con éxito si se realizó la actualización
+        res.status(200).json({ message: "Producto actualizado con éxito" });
     } catch (err) {
         console.error("Error al actualizar el producto:", err);
         res.status(500).json({ error: 'Error al actualizar el producto' });
     }
 });
+
 
 // Eliminar un producto
 router.delete('/delete/:id', async (req, res) => {
