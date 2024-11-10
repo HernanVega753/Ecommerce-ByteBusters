@@ -1,31 +1,62 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Productos</title>
+    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="./formStyles/products.css">
+    <link rel="icon" href="./assets/ByteBustersIcon.png" type="image/x-icon">
 </head>
+
 <body>
+    <header>
+
+        <div class="logo-container">
+            <img src="assets/bytebuster.png" alt="Logo">
+        </div>
+        <nav class="navbar">
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="#about">Nosotros</a></li>
+                <li><a href="#services">Servicios</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+                <li><a href="login.html" id="iniciar_sesion">Iniciar Sesión</a></li>
+                <li><a href="register.html" id="registrarse">Registrarse</a></li>
+                <li><a href="account.html" id="cuenta">Cuenta</a></li>
+            </ul>
+        </nav>
+    </header>
+
     <h1>Gestión de Productos</h1>
     <div id="productList"></div>
 
-    <form id="productForm">
+    <h1>Agregar Nuevo Producto</h1>
+    <form id="addProductForm" enctype="multipart/form-data">
         <label for="productName">Nombre del Producto:</label>
-        <input type="text" id="productName" name="productName" required><br>
-
+        <input type="text" id="productName" name="productName" required>
+        <br>
         <label for="price">Precio:</label>
-        <input type="number" id="price" name="price" required><br>
-
+        <input type="number" id="price" name="price" required>
+        <br>
         <label for="quanty">Cantidad:</label>
-        <input type="number" id="quanty" name="quanty" required><br>
-
-        <label for="img">URL de la Imagen:</label>
-        <input type="text" id="img" name="img"><br>
-
+        <input type="number" id="quanty" name="quanty" required>
+        <br>
+        <label for="img">Imagen del Producto:</label>
+        <input type="file" id="img" name="img" required>
+        <br>
         <button type="submit">Agregar Producto</button>
     </form>
 
-    <script src="./js/productScript.js"></script>
+    <!-- Footer Section -->
+    <footer>
+        <div class="footer-content">
+            <p>© 2024 ByteBusters. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="./js/productsCrud.js"></script>
 </body>
+
 </html>
