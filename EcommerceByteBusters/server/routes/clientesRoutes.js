@@ -194,7 +194,7 @@ router.get('/products', async (req, res) => {
         const [products] = await pool.query("SELECT * FROM productos");
         const productsWithImageURL = products.map(product => ({
             ...product,
-            img: `http://localhost:8080${product.img}`  // Asegúrate de que esta sea la ruta correcta
+            img: `https://ecommerce-bytebusters-production.up.railway.app/${product.img}`  // Asegúrate de que esta sea la ruta correcta
         }));
         res.status(200).json(productsWithImageURL);
     } catch (err) {

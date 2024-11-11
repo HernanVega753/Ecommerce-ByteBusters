@@ -3,7 +3,7 @@ const cart = []; // Carrito. Array vacío
 
 async function fetchProducts() {
     try {
-        const response = await fetch('http://localhost:8080/clientes/products');
+        const response = await fetch('https://ecommerce-bytebusters-production.up.railway.app//clientes/products');
         const products = await response.json();
 
         displayProductsIndex(products);
