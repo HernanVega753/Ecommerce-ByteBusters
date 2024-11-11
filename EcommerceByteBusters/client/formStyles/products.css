@@ -1,11 +1,64 @@
+:root {
+    --color-primary: #FF6600;
+    --color-secondary: #333333;
+    --color-accent: #FFD700;
+    --color-background: #F5F5F5;
+    --color-text: #2C3E50;
+    --color-hover-primary: #e55b00;
+    --box-shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f7f7f7;
+    font-family: 'Arial', sans-serif;
+    background-color: var(--box-shadow-color); /* Fondo claro */
+    display: flex;
+    align-items: center;
+    height: 100vh;
     margin: 0;
+    flex-direction: column;
+    
+  }
+header {
+    background-color: var(--color-secondary);
     padding: 20px;
     display: flex;
+    justify-content: space-between;
+    align-items: center;
     flex-direction: column;
     align-items: center;
+    width: 100%;
+}
+
+.logo-container img {
+    max-height: 50px;
+}
+
+.navbar {
+    display: flex;
+    flex-direction: row;
+}
+
+.navbar ul {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    align-self: center;
+}
+
+.navbar li {
+    margin-left: 20px;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.navbar a:hover {
+    color: var(--color-accent);
 }
 h1 {
     text-align: center;
@@ -75,3 +128,31 @@ button[type="submit"] {
 button[type="submit"]:hover {
     background-color: #218838;
 }
+ /* Media query para dispositivos móviles */
+ @media (max-width: 600px) {
+    form {
+      width: 90%;
+      padding: 15px;
+    }
+    * {
+        align-items: center;
+        justify-items: center;
+    }
+    .logo-container img {
+        width: 100%;
+    }
+  
+    h1, h2 {
+      font-size: 1.5rem;
+    }
+  
+    button, h2 button {
+      width: 100%;
+      padding: 10px 0;
+    }
+
+    .navbar a {
+        font-size: 12px;
+    }
+  }
+  

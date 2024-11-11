@@ -5,12 +5,25 @@ import { fileURLToPath } from 'url';
 import clientesRoutes from "./routes/clientesRoutes.js";
 import pool from "./db/dbConnections.js";  // Importa el pool de conexiones desde db.js
 import jwt from 'jsonwebtoken';
+import multer from 'multer';
 import config from "../config.js";
 
 const JWT_SECRET = config.jwtSecret;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// Configuración de multer para almacenar las imágenes en la carpeta 'uploads'
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, './uploads');  // Directorio donde se almacenarán las imágenes
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + path.extname(file.originalname));  // Nombre único con extensión
+    }
+});
+
+const upload = multer({ storage });
 
 // SDK de Mercado Pago
 import { MercadoPagoConfig, Preference } from 'mercadopago';
@@ -28,7 +41,7 @@ async function createTables() {
             CREATE TABLE IF NOT EXISTS clientes (
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 rol VARCHAR(50),
-                usuario VARCHAR(50) NOT NULL,
+                usuario VARCHAR(255) NOT NULL,
                 password VARCHAR(255) NOT NULL,
                 telefono VARCHAR(20),
                 email VARCHAR(100) NOT NULL
@@ -75,6 +88,9 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Sirve archivos estáticos desde la carpeta 'uploads' para poder acceder a las imágenes
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+
 // Usa las rutas de clientes
 app.use("/clientes", clientesRoutes);
 
@@ -90,6 +106,9 @@ app.get('/register', (req, res) => {
 });
 app.get('/add', (req, res) => {
     res.sendFile(path.join(__dirname, "..", "client", "addProduct.html"));
+});
+app.get('/products', (req, res) => {
+    res.sendFile(path.join(__dirname, "..", "client", "showProducts.html"));
 });
 
 app.post("/create_preference", async (req, res) => {
