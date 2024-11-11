@@ -7,9 +7,6 @@ import pool from "./db/dbConnections.js";  // Importa el pool de conexiones desd
 import jwt from 'jsonwebtoken';
 import multer from 'multer';
 import config from "../config.js";
-import dotenv from 'dotenv';
-
-dotenv.config(); // Carga las variables de .env en process.env
 
 const JWT_SECRET = config.jwtSecret;
 
@@ -85,7 +82,7 @@ async function createTables() {
 createTables();
 
 const app = express();
-const port = process.env.PORT;
+const port = config.port || 8080;
 
 app.use(cors());
 app.use(express.json());
