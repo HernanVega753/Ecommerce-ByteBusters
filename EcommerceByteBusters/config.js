@@ -10,7 +10,8 @@ export default {
         database: process.env.DB_NAME,
     },
     jwtSecret: process.env.JWT_SECRET,
-    mercadoPagoToken: process.env.ACCESS_TOKEN
+    mercadoPagoToken: process.env.ACCESS_TOKEN,
+    PORT: process.env.PORT
 };
 
 if (!process.env.DB_HOST || !process.env.DB_USER || !process.env.DB_PASSWORD || !process.env.DB_NAME) {
