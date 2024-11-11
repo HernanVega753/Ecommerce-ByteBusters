@@ -1,6 +1,6 @@
 async function obtenerDatosCuenta() {
     const token = localStorage.getItem("token");  // Obtén el token del localStorage
-    console.log("Token:", token);  // Verifica si el token está presente
+    //console.log("Token:", token);  // Verifica si el token está presente
 
     if (!token) {
         alert("Por favor, inicia sesión.");

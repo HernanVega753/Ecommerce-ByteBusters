@@ -1,5 +1,16 @@
 const shopContent = document.getElementById("shopContent");
+const btnMenu = document.getElementById('menu');
+const nav = document.getElementById('lista-nav')
 const cart = []; // Carrito. Array vacío
+
+btnMenu.addEventListener('click', () => {
+    if (nav.style.display === 'none' || nav.style.display === '') {
+        nav.style.display = 'flex';
+    } else {
+        nav.style.display = 'none';
+    }
+});
+
 
 async function fetchProducts() {
     try {
