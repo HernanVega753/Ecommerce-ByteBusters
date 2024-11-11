@@ -228,7 +228,7 @@ router.put('/products/update/:id', upload.single('img'), async (req, res) => {
 
     // Si la imagen no se carga, mantiene la imagen anterior
     if (req.file) {
-        imgPath = `/uploads/${req.file.filename}`;
+        imgPath = `uploads/${req.file.filename}`;
     }
 
     // Aseguramos que los valores de productName, price y quanty no sean undefined
