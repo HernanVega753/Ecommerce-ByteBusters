@@ -16,7 +16,7 @@ function displayProductsIndex(products) {
     products.forEach(product => {
         const content = document.createElement("div");
         content.className = "card";
-        const defaultImg = "../assets/ByteBustersIcon.png"; // Ruta de la imagen por defecto
+        const defaultImg = "https://ecommerce-bytebusters-production.up.railway.app/assets/ByteBustersIcon.png"; // Ruta de la imagen por defecto
         const productImg = product.img ? product.img : defaultImg;
 
         content.innerHTML = `
