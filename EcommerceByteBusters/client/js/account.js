@@ -2,13 +2,16 @@ const btnMenu = document.getElementById('menu');
 const nav = document.getElementById('lista-nav')
 
 
-btnMenu.addEventListener('click', () => {
-    if (nav.style.display === 'none' || nav.style.display === '') {
-        nav.style.display = 'flex';
-    } else {
-        nav.style.display = 'none';
+document.addEventListener("DOMContentLoaded", function() {
+    // Tu código aquí
+    const btnMenu = document.getElementById("btnMenu");
+    if (btnMenu) {
+        btnMenu.addEventListener("click", () => {
+            // Acciones al hacer clic en el botón
+        });
     }
 });
+
 async function obtenerDatosCuenta() {
     const token = localStorage.getItem("token");  // Obtén el token del localStorage
     //console.log("Token:", token);  // Verifica si el token está presente
