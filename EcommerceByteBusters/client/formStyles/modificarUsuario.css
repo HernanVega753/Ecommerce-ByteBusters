@@ -221,18 +221,18 @@ header {
     }
 
     .navbar ul {
-        
         display: none;
         flex-direction: column;
         align-items: flex-start;
         position: fixed;
-        top: 80px;
+        top: 60px;
+        left: 6vw;
         
     }
     .navbar ul li {
         width: fit-content;
         background-color: var(--color-hover-primary);
-        margin: 10px;
+        margin: 5px;
         padding: 5px;
         
     }
@@ -241,17 +241,21 @@ header {
     }
     .navbar button {
         display: block;
-        width: fit-content;
-        background-color: transparent;
-        position: fixed;
-        left: 3vw;
-        margin-bottom:  25px;
+        width: 50px;
+        height: 50px;
         border: none;
-        align-content:center;
+        position: fixed;
+        left: 5vw;
+        margin-bottom:  20px;
+        background-color: transparent;
+        overflow: hidden;
     }
     .navbar button img {
         width: 35px;
         height: 35px;
         
+    }
+    header {
+        width: 100%;
     }
 }

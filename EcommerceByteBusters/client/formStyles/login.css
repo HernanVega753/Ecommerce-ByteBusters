@@ -175,40 +175,44 @@ body {
     }
 
     .navbar ul {
-        display: none;
-        flex-direction: column;
-        align-items: flex-start;
-        position: fixed;
-        top: 60px;
-        
-    }
-    .navbar ul li {
-        width: fit-content;
-        background-color: var(--color-hover-primary);
-        margin: 25px;
-        padding: 5px;
-        
-    }
-    .navbar ul li a {
-        text-align: left;
-    }
-    .navbar button {
-        display: block;
-        width: 25px;
-        height: 25px;
-        position: fixed;
-        left: 7vw;
-        margin-bottom:  25px;
-        background-color: transparent;
-    }
-    .navbar button img {
-        width: 35px;
-        height: 35px;
-        
-    }
-    header {
-        width: 100%;
-    }
+      display: none;
+      flex-direction: column;
+      align-items: flex-start;
+      position: fixed;
+      top: 60px;
+      left: 6vw;
+      
+  }
+  .navbar ul li {
+      width: fit-content;
+      background-color: var(--color-hover-primary);
+      margin: 5px;
+      padding: 5px;
+      
+  }
+  .navbar ul li a {
+      text-align: left;
+  }
+  .navbar button {
+      display: block;
+      width: 50px;
+      height: 50px;
+      border: none;
+      position: fixed;
+      left: 5vw;
+      margin-bottom:  20px;
+      background-color: transparent;
+      overflow: hidden;
+  }
+  .navbar button img {
+      width: 35px;
+      height: 35px;
+      
+  }
+  header {
+      width: 100%;
+  }
+
     .services {
         width: 100%;
     }

@@ -588,14 +588,12 @@ button:hover {
 }
 /* Media query para dispositivos móviles */
 @media (max-width: 600px) {
-    form {
-      width: 90%;
-      padding: 15px;
-    }
+    
     * {
         align-items: center;
         justify-items: center;
         width: 100vw;
+        overflow-x:  hidden;
     }
     
     .logo-container {
@@ -623,12 +621,13 @@ button:hover {
         align-items: flex-start;
         position: fixed;
         top: 60px;
+        left: 6vw;
         
     }
     .navbar ul li {
         width: fit-content;
         background-color: var(--color-hover-primary);
-        margin: 25px;
+        margin: 5px;
         padding: 5px;
         
     }
@@ -637,12 +636,14 @@ button:hover {
     }
     .navbar button {
         display: block;
-        width: 25px;
-        height: 25px;
+        width: 50px;
+        height: 50px;
+        border: none;
         position: fixed;
-        left: 7vw;
-        margin-bottom:  25px;
+        left: 5vw;
+        margin-bottom:  20px;
         background-color: transparent;
+        overflow: hidden;
     }
     .navbar button img {
         width: 35px;

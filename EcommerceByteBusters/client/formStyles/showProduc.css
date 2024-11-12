@@ -154,23 +154,46 @@ footer {
 
 /* Responsive Styles */
 @media (max-width: 600px) {
-    .navbar {
+    
+    * {
+        align-items: center;
+        justify-items: center;
+        width: 100vw;
+        overflow-x:  hidden;
+    }
+    
+    .logo-container {
         width: 100%;
+    }
+    .logo-container img {
+        width: 100%;
+    }
+    .logo-container img {
+        width: 100%;
+    }
+  
+    h1, h2 {
+      font-size: 1.5rem;
+    }
+  
+    button, h2 button {
+      width: 100%;
+      padding: 10px 0;
     }
 
     .navbar ul {
-        
         display: none;
         flex-direction: column;
         align-items: flex-start;
         position: fixed;
-        top: 80px;
+        top: 60px;
+        left: 6vw;
         
     }
     .navbar ul li {
         width: fit-content;
         background-color: var(--color-hover-primary);
-        margin: 10px;
+        margin: 5px;
         padding: 5px;
         
     }
@@ -179,17 +202,22 @@ footer {
     }
     .navbar button {
         display: block;
-        width: 25px;
-        height: 25px;
+        width: 50px;
+        height: 50px;
+        border: none;
         position: fixed;
-        left: 7vw;
-        margin-bottom:  25px;
+        left: 5vw;
+        margin-bottom:  20px;
         background-color: transparent;
+        overflow: hidden;
     }
     .navbar button img {
         width: 35px;
         height: 35px;
         
+    }
+    header {
+        width: 100%;
     }
 
     main {
