@@ -12,7 +12,7 @@ const router = express.Router();
 // Configuración para la carga de imágenes usando multer
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, 'uploads/'); // Directorio para guardar las imágenes
+        cb(null, 'upload/'); // Directorio para guardar las imágenes
     },
     filename: (req, file, cb) => {
         cb(null, Date.now() + path.extname(file.originalname)); // Nombre único para las imágenes
@@ -172,7 +172,7 @@ router.delete("/deleteUser/:id", async (req, res) => {
 router.post('/add', upload.single('img'), async (req, res) => {
     const { productName, price, quanty } = req.body;
     const defaultImgPath = 'assets/default.jpg'; // Ruta de la imagen por defecto
-    const imgPath = req.file ? `uploads/${req.file.filename}` : 'uploads/ByteBustersIcon.png'; // Guardar la ruta de la imagen o usar la imagen por defecto
+    const imgPath = req.file ? `upload/${req.file.filename}` : 'upload/ByteBustersIcon.png'; // Guardar la ruta de la imagen o usar la imagen por defecto
 
     try {
         const [result] = await pool.query(
@@ -228,7 +228,7 @@ router.put('/products/update/:id', upload.single('img'), async (req, res) => {
 
     // Si la imagen no se carga, mantiene la imagen anterior
     if (req.file) {
-        imgPath = `uploads/${req.file.filename}`;
+        imgPath = `upload/${req.file.filename}`;
     }
 
     // Aseguramos que los valores de productName, price y quanty no sean undefined
