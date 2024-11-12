@@ -225,8 +225,8 @@ header {
         flex-direction: column;
         align-items: flex-start;
         position: fixed;
-        top: 60px;
-        left: 6vw;
+        top: 40px;
+        left: 3vw;
         
     }
     .navbar ul li {

@@ -13,10 +13,10 @@ const JWT_SECRET = config.jwtSecret;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Configuración de multer para almacenar las imágenes en la carpeta 'uploads'
+// Configuración de multer para almacenar las imágenes en la carpeta 'upload'
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, './uploads');  // Directorio donde se almacenarán las imágenes
+        cb(null, './upload');  // Directorio donde se almacenarán las imágenes
     },
     filename: (req, file, cb) => {
         cb(null, Date.now() + path.extname(file.originalname));  // Nombre único con extensión
@@ -88,8 +88,8 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Sirve archivos estáticos desde la carpeta 'uploads' para poder acceder a las imágenes
-app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+// Sirve archivos estáticos desde la carpeta 'upload' para poder acceder a las imágenes
+app.use('/upload', express.static(path.join(__dirname, '../upload')));
 
 // Usa las rutas de clientes
 app.use("/clientes", clientesRoutes);

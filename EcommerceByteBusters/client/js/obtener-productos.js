@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (response.ok) {
             const products = await response.json();
             const tableBody = document.querySelector('#productosTable tbody');
-            const defaultImg = '/uploads/ByteBustersIcon.png'; // Ruta de la imagen por defecto
+            const defaultImg = '/upload/ByteBustersIcon.png'; // Ruta de la imagen por defecto
 
             // Agregar los productos a la tabla
             products.forEach(product => {
