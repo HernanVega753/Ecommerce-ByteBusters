@@ -14,6 +14,20 @@ body {
     display: flex;
     flex-direction: column;
 }
+.navbar button {
+    display: none;
+    width: 50px;
+    height: 50px;
+    position: fixed;
+    left: 7vw;
+    margin-bottom:  25px;
+    background-color: transparent;
+  }
+  .navbar button img {
+    width: 35px;
+    height: 35px;
+    
+  }
 
 /* Título de la página */
 h1 {
@@ -127,15 +141,24 @@ footer {
     margin-top: auto;
     /* Mueve el footer al fondo */
 }
-/* Media query para dispositivos móviles */
 @media (max-width: 600px) {
-    form {
-      width: 90%;
-      padding: 15px;
-    }
+    
     * {
         align-items: center;
         justify-items: center;
+        width: 100%;
+        overflow-x: hidden;
+    }
+    #showProducts {
+        font-size: 15px;
+    }
+    #img {
+        font-size: 8px;
+        text-align: left;
+    }
+    
+    .logo-container {
+        width: 100%;
     }
     .logo-container img {
         width: 100%;
@@ -150,8 +173,62 @@ footer {
       padding: 10px 0;
     }
 
-    .navbar a {
-        font-size: 12px;
+    .navbar ul {
+        display: none;
+        flex-direction: column;
+        align-items: flex-start;
+        position: fixed;
+        top: 60px;
+        left: 3vw;
+        
+    }
+    .navbar ul li {
+        width: fit-content;
+        background-color: var(--color-hover-primary);
+        margin: 10px;
+        padding: 5px;
+        
+    }
+    .navbar ul li a {
+        text-align: left;
+    }
+    .navbar button {
+        display: block;
+        width: 50px;
+        height: 50px;
+        position: fixed;
+        left: 3vw;
+        top: 5vh;
+        margin-bottom:  25px;
+        background-color: transparent;
+        border: none;
+        overflow: hidden;
+    }
+    .navbar button img {
+        width: 35px;
+        height: 35px;
+        
+    }
+    header {
+        width: 100%;
+    }
+    .services {
+        width: 100%;
+    }
+    label {
+        padding-left: 20px;
+    }
+    #addProductForm {
+        width: fit-content;
+        padding-right: 15px;
+    }
+    form {
+        background-color: white;
+        padding: 5px;
+        width: 70%;
+        margin: 5px auto;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
   }
   

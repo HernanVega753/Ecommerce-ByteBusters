@@ -61,6 +61,20 @@ body {
 .navbar a:hover {
     color: var(--color-accent);
 }
+.navbar button {
+  display: none;
+  width: 25px;
+  height: 25px;
+  position: fixed;
+  left: 7vw;
+  margin-bottom:  25px;
+  background-color: transparent;
+}
+.navbar button img {
+  width: 35px;
+  height: 35px;
+  
+}
   
   h1 {
     color: #ff6600; /* Naranja */
@@ -138,9 +152,17 @@ body {
     * {
         align-items: center;
         justify-items: center;
+        width: 100vw;
+    }
+    
+    .logo-container {
+        width: 100%;
     }
     .logo-container img {
-        width: 70%;
+        width: 100%;
+    }
+    .logo-container img {
+        width: 100%;
     }
   
     h1, h2 {
@@ -152,8 +174,55 @@ body {
       padding: 10px 0;
     }
 
-    .navbar a {
+    .navbar ul {
+        display: none;
+        flex-direction: column;
+        align-items: flex-start;
+        position: fixed;
+        top: 60px;
+        
+    }
+    .navbar ul li {
+        width: fit-content;
+        background-color: var(--color-hover-primary);
+        margin: 25px;
+        padding: 5px;
+        
+    }
+    .navbar ul li a {
+        text-align: left;
+    }
+    .navbar button {
+        display: block;
+        width: 25px;
+        height: 25px;
+        position: fixed;
+        left: 7vw;
+        margin-bottom:  25px;
+        background-color: transparent;
+    }
+    .navbar button img {
+        width: 35px;
+        height: 35px;
+        
+    }
+    header {
+        width: 100%;
+    }
+    .services {
+        width: 100%;
+    }
+    .service-card {
+        display: flex;
+        flex-direction: column;
+        width: 80%;
+        text-align: center;
+    }
+    .service-card h3 {
         font-size: 12px;
+    }
+    .service-card p {
+        font-size: 10px;
     }
   }
   

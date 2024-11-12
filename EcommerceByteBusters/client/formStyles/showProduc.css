@@ -7,12 +7,17 @@
     --color-hover-primary: #e55b00;
     --box-shadow-color: rgba(0, 0, 0, 0.1);
 }
+
 html,
 body {
+    width: 100%;
     height: 100%;
     margin: 0;
     display: flex;
     flex-direction: column;
+    box-sizing: border-box;
+    background-color: var(--color-background);
+    overflow-x: hidden;
 }
 
 /* Header Styles */
@@ -20,27 +25,37 @@ header {
     background-color: var(--color-secondary);
     padding: 20px;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
     flex-direction: column;
+    justify-content: space-between;
     align-items: center;
     width: 100%;
 }
 
 .logo-container img {
     max-height: 50px;
+    width: 100%;
 }
 
 .navbar {
     display: flex;
-    flex-direction: row;
 }
 
 .navbar ul {
     list-style-type: none;
     padding: 0;
     display: flex;
-    align-self: center;
+}
+
+.navbar button {
+    display: none;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.navbar button img {
+    width: 30px;
+    height: 30px;
 }
 
 .navbar li {
@@ -58,25 +73,27 @@ header {
     color: var(--color-accent);
 }
 
-/* Contenedor principal que ocupa el espacio disponible */
+/* Main Content */
 main {
     flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    padding: 20px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-/* Estilos para la tabla */
+/* Table Styles */
 #productosTable {
-    width: 80%;
-    /* Ajusta el tamaño de la tabla, puedes cambiar el 80% a cualquier valor */
-    margin: 20px auto;
-    /* Centra la tabla horizontalmente */
+    width: 100%;
+    max-width: 800px;
+    margin: 20px 0;
     border-collapse: collapse;
-    /* Elimina los espacios entre celdas */
     text-align: center;
-    /* Centra el texto dentro de las celdas */
+    box-shadow: 0 4px 8px var(--box-shadow-color);
 }
 
 #productosTable th,
@@ -86,7 +103,8 @@ main {
 }
 
 #productosTable th {
-    background-color: #f4f4f4;
+    background-color: var(--color-primary);
+    color: white;
 }
 
 #productosTable img {
@@ -94,31 +112,29 @@ main {
     height: 50px;
 }
 
-/* Formulario de edición centrado */
+/* Edit Form */
 #editProductForm {
-    width: 80%;
-    margin: 20px auto;
+    width: 100%;
+    max-width: 600px;
     background-color: #f9f9f9;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px var(--box-shadow-color);
+    margin: 20px 0;
 }
 
-#editProductoForm input {
+#editProductoForm input,
+#editProductoForm button {
     width: 100%;
     padding: 10px;
     margin: 5px 0;
-    border: 1px solid #ccc;
     border-radius: 4px;
 }
 
 #editProductoForm button {
-    padding: 10px 20px;
-    margin: 10px 0;
     background-color: #4CAF50;
     color: white;
     border: none;
-    border-radius: 4px;
     cursor: pointer;
 }
 
@@ -128,41 +144,59 @@ main {
 
 /* Footer */
 footer {
-    background-color: #333;
+    background-color: var(--color-secondary);
     color: white;
     text-align: center;
     padding: 10px;
-    position: relative;
-    bottom: 0;
-    /* width: 100%; */
     margin-top: auto;
-    /* Mueve el footer al fondo */
+    width: 100%;
 }
- /* Media query para dispositivos móviles */
- @media (max-width: 600px) {
-    form {
-      width: 90%;
-      padding: 15px;
-    }
-    * {
-        align-items: center;
-        justify-items: center;
-    }
-    .logo-container img {
+
+/* Responsive Styles */
+@media (max-width: 600px) {
+    .navbar {
         width: 100%;
     }
-  
-    h1, h2 {
-      font-size: 1.5rem;
+
+    .navbar ul {
+        
+        display: none;
+        flex-direction: column;
+        align-items: flex-start;
+        position: fixed;
+        top: 80px;
+        
     }
-  
-    button, h2 button {
-      width: 100%;
-      padding: 10px 0;
+    .navbar ul li {
+        width: fit-content;
+        background-color: var(--color-hover-primary);
+        margin: 10px;
+        padding: 5px;
+        
+    }
+    .navbar ul li a {
+        text-align: left;
+    }
+    .navbar button {
+        display: block;
+        width: 25px;
+        height: 25px;
+        position: fixed;
+        left: 7vw;
+        margin-bottom:  25px;
+        background-color: transparent;
+    }
+    .navbar button img {
+        width: 35px;
+        height: 35px;
+        
     }
 
-    .navbar a {
-        font-size: 12px;
+    main {
+        padding: 10px;
     }
-  }
-  
+
+    #productosTable th, #productosTable td {
+        padding: 5px;
+    }
+}

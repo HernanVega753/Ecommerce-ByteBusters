@@ -45,6 +45,20 @@ body {
     display: flex;
     align-self: center;
 }
+.navbar button {
+  display: none;
+  width: 25px;
+  height: 25px;
+  position: fixed;
+  left: 7vw;
+  margin-bottom:  25px;
+  background-color: transparent;
+}
+.navbar button img {
+  width: 35px;
+  height: 35px;
+  
+}
 
 .navbar li {
     margin-left: 20px;
@@ -129,7 +143,6 @@ body {
     background-color: #cc5200; /* Naranja más oscuro al pasar el ratón */
   }
   
-  /* Media query para dispositivos móviles */
   @media (max-width: 600px) {
     form {
       width: 90%;
@@ -138,6 +151,14 @@ body {
     * {
         align-items: center;
         justify-items: center;
+        width: 100vw;
+    }
+    
+    .logo-container {
+        width: 100%;
+    }
+    .logo-container img {
+        width: 100%;
     }
     .logo-container img {
         width: 100%;
@@ -152,8 +173,55 @@ body {
       padding: 10px 0;
     }
 
-    .navbar a {
+    .navbar ul {
+        display: none;
+        flex-direction: column;
+        align-items: flex-start;
+        position: fixed;
+        top: 60px;
+        
+    }
+    .navbar ul li {
+        width: fit-content;
+        background-color: var(--color-hover-primary);
+        margin: 25px;
+        padding: 5px;
+        
+    }
+    .navbar ul li a {
+        text-align: left;
+    }
+    .navbar button {
+        display: block;
+        width: 25px;
+        height: 25px;
+        position: fixed;
+        left: 7vw;
+        margin-bottom:  25px;
+        background-color: transparent;
+    }
+    .navbar button img {
+        width: 35px;
+        height: 35px;
+        
+    }
+    header {
+        width: 100%;
+    }
+    .services {
+        width: 100%;
+    }
+    .service-card {
+        display: flex;
+        flex-direction: column;
+        width: 80%;
+        text-align: center;
+    }
+    .service-card h3 {
         font-size: 12px;
+    }
+    .service-card p {
+        font-size: 10px;
     }
   }
   

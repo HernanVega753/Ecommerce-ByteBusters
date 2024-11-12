@@ -1,3 +1,14 @@
+const btnMenu = document.getElementById('menu');
+const nav = document.getElementById('lista-nav')
+
+
+btnMenu.addEventListener('click', () => {
+    if (nav.style.display === 'none' || nav.style.display === '') {
+        nav.style.display = 'flex';
+    } else {
+        nav.style.display = 'none';
+    }
+});
 async function obtenerDatosCuenta() {
     const token = localStorage.getItem("token");  // Obtén el token del localStorage
     //console.log("Token:", token);  // Verifica si el token está presente
